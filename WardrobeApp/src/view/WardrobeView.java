@@ -1,6 +1,7 @@
 package view;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ArticleView extends BorderPane {
+public class WardrobeView extends BorderPane {
     private final String TOP_IMG = "defaultImg/top.jpeg";
     private final String SKIRT_IMG = "defaultImg/skirt.jpeg";
     private final String SHOES_IMG = "defaultImg/shoes.jpeg";
@@ -61,10 +62,11 @@ public class ArticleView extends BorderPane {
     final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
     private Label positionNum = new Label(" 1 / 2 ");
 
-    //CRUD
-    private Button addBtn = new Button("Lägg till artikel");
 
-    public ArticleView() {
+    //CRUD
+    private Button browseImgBtn = new Button("Lägg till artikel");
+
+    public WardrobeView() {
         setLeft(inputView());
         setRight(rightTop());
     }
@@ -90,14 +92,14 @@ public class ArticleView extends BorderPane {
         addBtnHolder.setAlignment(Pos.BASELINE_CENTER);
         addBtnHolder.setPadding(new Insets(0,1,5,10));
         ImageView img = getImg(HANG_IMG, 150);
-        addBtn.setStyle(IDLE_BUTTON_STYLE);
-        addBtn.setOnMouseEntered(e -> addBtn.setStyle(HOVERED_BUTTON_STYLE));
-        addBtn.setOnMouseExited(e -> addBtn.setStyle(IDLE_BUTTON_STYLE));
-        addBtn.setGraphic(img);
-        addBtn.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        addBtn.setContentDisplay(ContentDisplay.TOP);
+        browseImgBtn.setStyle(IDLE_BUTTON_STYLE);
+        browseImgBtn.setOnMouseEntered(e -> browseImgBtn.setStyle(HOVERED_BUTTON_STYLE));
+        browseImgBtn.setOnMouseExited(e -> browseImgBtn.setStyle(IDLE_BUTTON_STYLE));
+        browseImgBtn.setGraphic(img);
+        browseImgBtn.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        browseImgBtn.setContentDisplay(ContentDisplay.TOP);
 
-        addBtnHolder.getChildren().addAll(addBtn);
+        addBtnHolder.getChildren().addAll(browseImgBtn);
         addBtnHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         typeInput.setPrefWidth(140);
@@ -242,7 +244,7 @@ public class ArticleView extends BorderPane {
 
 
         } catch (IOException e) {
-            Logger.getLogger(ArticleView.class.getName()).log(Level.SEVERE, null, e + " heeej");
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e + " heeej");
         }
 
         return imageView;
@@ -265,7 +267,7 @@ public class ArticleView extends BorderPane {
             imageView.setPreserveRatio(true);
 
         } catch (IOException e) {
-            Logger.getLogger(ArticleView.class.getName()).log(Level.SEVERE, null, e + " heeej");
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e + " heeej");
         }
         return imageView;
     }
@@ -284,7 +286,7 @@ public class ArticleView extends BorderPane {
             button.setPadding(Insets.EMPTY);
 
         } catch (IOException e) {
-            Logger.getLogger(ArticleView.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e);
         }
         return button;
     }
@@ -292,4 +294,13 @@ public class ArticleView extends BorderPane {
     public ComboBox getCategories() {
         return categories;
     }
+
+    public void addArticleBtnListener(EventHandler eventHandler) {
+        browseImgBtn.setOnAction(eventHandler);
+    }
+
+    public Button getBrowseImgBtn() {
+        return browseImgBtn;
+    }
+
 }

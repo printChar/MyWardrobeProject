@@ -1,12 +1,9 @@
+import controller.ArticleController;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import view.ArticleView;
+import service.ArticleService;
+import view.WardrobeView;
 
 public class Main extends Application {
 
@@ -37,17 +34,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        ArticleView view = new ArticleView();
+        WardrobeView view = new WardrobeView();
+        ArticleService model = new ArticleService();
+        ArticleController voteViewController = new ArticleController(view, model);
 
         primaryStage.setTitle("My wardrobe");
         Scene scene = new Scene(view, 630, 670);
         scene.getStylesheets().add("stylesheet.css");
-
        // view.setBackground(new Background(new BackgroundFill(Color.web("#f5f5f5"), CornerRadii.EMPTY, Insets.EMPTY)));
         // Color.LIGHTGRAY
-
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
+
+
 }

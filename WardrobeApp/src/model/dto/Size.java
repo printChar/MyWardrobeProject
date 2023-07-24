@@ -7,7 +7,7 @@ public enum Size {
     L(40),
     XL(42);
 
-    private int value;
+    private final int value;
 
     Size(int value) {
         this.value = value;
