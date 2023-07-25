@@ -3,6 +3,8 @@ package controller;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.dto.Article;
@@ -20,16 +22,34 @@ public class ArticleController {
    public ArticleController(WardrobeView view, ArticleService model) {
       this.view = view;
       this.model = model;
-      BtnHandlerCRUD crudOperator = new BtnHandlerCRUD();
+      CrudBtnHandler btnHandler = new CrudBtnHandler();
       updateView();
    }
 
    private void updateView(){
       List<Article> allArticles = model.findAll();
+      boolean isMyComboBoxEmpty = view.getTypeInput().getSelectionModel().isEmpty();
+
+      if(isMyComboBoxEmpty){
+         view.getSexInput().setDisable(false);
+      }
+      view.getSexInput().setDisable(true);
    }
 
-   private class BtnHandlerCRUD implements EventHandler {
-      public BtnHandlerCRUD() {
+   private class classComboBoxListener implements EventHandler {
+
+      public classComboBoxListener() {
+         view.addComboboxListener(this);
+      }
+
+      @Override
+      public void handle(Event event) {
+
+      }
+   }
+
+   private class CrudBtnHandler implements EventHandler {
+      public CrudBtnHandler() {
          view.addArticleBtnListener(this);
       }
 
@@ -41,7 +61,9 @@ public class ArticleController {
          if(btn == view.getBrowseImgBtn()){
             File file = f.showOpenDialog(new Stage());
             if (file != null) {
-
+               Image img = new Image(file.toURI().toString());
+               view.getImgSrcTxf().setText(file.toURI().toString());
+               view.getTopImgView().setImage(img);
             }
          }
 

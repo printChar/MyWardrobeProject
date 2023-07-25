@@ -3,15 +3,14 @@ public class Article {
     private int id;
     private int colour;
     private int style;
-    private int category;
-    private Enum size;
+    private Category category;
+    private Size size;
     private Enum gender;
     private int model;
     private int brand;
     private String picSrc;
     private boolean isClean;
-
-    public Article(int colour, int style, int category, Enum size, Enum gender, int model, int brand, String picSrc, boolean isClean) {
+    public Article(int colour, int style, Category category, Size size, Enum gender, int model, int brand, String picSrc, boolean isClean) {
         this.colour = colour;
         this.style = style;
         this.category = category;
@@ -22,10 +21,8 @@ public class Article {
         this.picSrc = picSrc;
         this.isClean = isClean;
     }
-
     public Article() {
     }
-
     public int getId() {
         return id;
     }
@@ -48,22 +45,6 @@ public class Article {
 
     public void setStyle(int style) {
         this.style = style;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    public Enum getSize() {
-        return size;
-    }
-
-    public void setSize(Enum size) {
-        this.size = size;
     }
 
     public Enum getGender() {
@@ -104,6 +85,22 @@ public class Article {
 
     public void setClean(boolean clean) {
         isClean = clean;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
     }
 
     @Override

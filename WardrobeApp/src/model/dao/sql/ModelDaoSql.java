@@ -18,7 +18,6 @@ public class ModelDaoSql implements IModelDao {
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_MODELS = "SELECT * FROM MODELS";
 
-
     @Override
     public Model read(int id) {
         return null;

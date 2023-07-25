@@ -22,7 +22,7 @@ public class ArticleDaoSql implements IArticleDao {
         try (PreparedStatement pstmt = conn.prepareStatement(SQL_CREATE_ARTICLE)) {
             pstmt.setInt(1, article.getColour());
             pstmt.setInt(2, article.getStyle());
-            pstmt.setInt(3, article.getCategory());
+            pstmt.setString(3, article.getCategory().toString());
             pstmt.setString(4, article.getSize().toString());
             pstmt.setString(5, article.getGender().toString());
             pstmt.setInt(6, article.getModel());
@@ -62,7 +62,7 @@ public class ArticleDaoSql implements IArticleDao {
                     article.setId(rs.getInt(1));
                     article.setColour(rs.getInt(2));
                     article.setStyle(rs.getInt(3));
-                    article.setCategory(rs.getInt(4));
+                    article.setCategory(Category.valueOf(rs.getString(4)));
                     article.setSize(Size.valueOf(rs.getString(5)));
                     article.setGender(Gender.valueOf(rs.getString(6)));
                     article.setModel(rs.getInt(7));

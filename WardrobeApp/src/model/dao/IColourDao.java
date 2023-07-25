@@ -7,5 +7,6 @@ import java.util.List;
 public interface IColourDao {
 
     Colour read(int id);
-    List<Colour> getAll(int id);
+    List<Colour> getAllBy(int id);
+    List<Colour> getAll();
 }

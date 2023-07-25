@@ -20,8 +20,13 @@ public class ColourDaoSql implements IColourDao {
     }
 
     @Override
-    public List<Colour> getAll(int id) {
+    public List<Colour> getAllBy(int id) {
         ArrayList<Colour> allColours = new ArrayList();
+        return null;
+    }
+
+    @Override
+    public List<Colour> getAll() {
         return null;
     }
 }

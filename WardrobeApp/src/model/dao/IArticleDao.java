@@ -10,7 +10,6 @@ public interface IArticleDao {
     Article read(int id);
     void update(Article article);
     void delete(Article article);
-
     List<Article> getAll();
 
 

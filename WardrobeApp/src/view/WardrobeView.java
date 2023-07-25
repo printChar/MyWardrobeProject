@@ -1,5 +1,7 @@
 package view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import model.dto.Category;
 import model.dto.Size;
 
 import javax.imageio.ImageIO;
@@ -20,9 +23,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WardrobeView extends BorderPane {
-    private final String TOP_IMG = "defaultImg/top.jpeg";
+    private final TextField imgSrc = new TextField();
+    private final String TOP_IMG = "defaultImg/tshirt-vector.png";
     private final String SKIRT_IMG = "defaultImg/skirt.jpeg";
-    private final String SHOES_IMG = "defaultImg/shoes.jpeg";
+    private final String BOTTOM_IMG = "defaultImg/pants-vector.png";
+    private final String SHOES_IMG = "defaultImg/shoe-vector.png";
     private final String HANG_IMG = "defaultImg/h3.png";
     private final String LEFT_ARROW_IMG = "icons/icons8-back-50.png";
     private final String RIGHT_ARROW_IMG = "icons/icons8-forward-50.png";
@@ -33,21 +38,22 @@ public class WardrobeView extends BorderPane {
     private Button searchBtn = new Button("Sök");
     private Button removeBtn = new Button("Radera");
     private Button createOutfitBtn = new Button("Skapa outfit");
-    private ComboBox categories = new ComboBox();
-    private ComboBox types = new ComboBox();
+    ObservableList<String> listInstance = FXCollections.observableArrayList();
+    private ComboBox typeCB = new ComboBox();
+    private ComboBox catCB= new ComboBox();
     private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn1 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn1 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn2 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
-    private ImageView topImgView = getDefaultImg(TOP_IMG);
-    private ImageView centerImgView = getDefaultImg(SKIRT_IMG);
-    private ImageView bottomImgView = getDefaultImg(SHOES_IMG);
-    private ComboBox typeInput = new ComboBox();
-    private ComboBox  sexInput = new ComboBox();
-    private TextField  modelInput = new TextField();
-    private ComboBox  modelCategories = new ComboBox();
+    private ImageView topImgView = addDefaultImgToImageView(TOP_IMG);
+    private ImageView centerImgView = addDefaultImgToImageView(BOTTOM_IMG);
+    private ImageView bottomImgView = addDefaultImgToImageView(SHOES_IMG);
+    private ComboBox typeInput = new ComboBox(listInstance);
+    private ComboBox sexInput = new ComboBox();
+    private TextField modelInput = new TextField();
+    private ComboBox modelCategories = new ComboBox();
     private TextField colourInput = new TextField();
     private ComboBox colourCategories = new ComboBox();
     private TextField styleInput = new TextField();
@@ -55,14 +61,14 @@ public class WardrobeView extends BorderPane {
     private TextField brandInput= new TextField();
     private ComboBox brandCategories = new ComboBox();
     private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
+    private Category[] categories = {Category.TOP, Category.BOTTOM, Category.SHOES};
+
     private RadioButton[] sizeChoice = new RadioButton[sizes.length];
     private String[] status = {"Ren", "Tvätten"};
     private RadioButton[] statusChoice = new RadioButton[status.length];
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
     final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
     private Label positionNum = new Label(" 1 / 2 ");
-
-
     //CRUD
     private Button browseImgBtn = new Button("Lägg till artikel");
 
@@ -71,7 +77,6 @@ public class WardrobeView extends BorderPane {
         setRight(rightTop());
     }
     private GridPane inputView(){
-
         GridPane gridPane = new GridPane();
         for (int i = 0; i < 2; i++) {
             ColumnConstraints column = new ColumnConstraints(145);
@@ -91,7 +96,7 @@ public class WardrobeView extends BorderPane {
        // addBtnHolder.fillHeightProperty();
         addBtnHolder.setAlignment(Pos.BASELINE_CENTER);
         addBtnHolder.setPadding(new Insets(0,1,5,10));
-        ImageView img = getImg(HANG_IMG, 150);
+        ImageView img = addImgToImageView(HANG_IMG, 150);
         browseImgBtn.setStyle(IDLE_BUTTON_STYLE);
         browseImgBtn.setOnMouseEntered(e -> browseImgBtn.setStyle(HOVERED_BUTTON_STYLE));
         browseImgBtn.setOnMouseExited(e -> browseImgBtn.setStyle(IDLE_BUTTON_STYLE));
@@ -112,8 +117,8 @@ public class WardrobeView extends BorderPane {
         styleCategories.setPrefWidth(140);
         brandInput.setMaxWidth(140);
         brandCategories.setPrefWidth(140);
+        //listInstance.addAll("Top", "bottom", "shoes");
 
-        TextField imgSrc = new TextField("https://www.sellpy.se/item/jbmnWC4cgd/g-star-kjol-strl-s-bla");
         imgSrc.setDisable(true);
         gridPane.add(imgSrc,0,0, 2,1);
         gridPane.add(addBtnHolder, 0,1, 2,1);
@@ -182,8 +187,9 @@ public class WardrobeView extends BorderPane {
         gp.setPadding(new Insets(0,0,5,0));
         gp.setBackground(new Background(new BackgroundFill(Color.web("#e6eaef"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        categories.setMinWidth(140);
-        types.setMinWidth(140);
+        catCB.setMinWidth(140);
+        typeCB.setMinWidth(140);
+        //types.setValue(clothType);
 
         HBox top3 = new HBox(5);
         top3.setPrefSize(100, 100);
@@ -215,8 +221,8 @@ public class WardrobeView extends BorderPane {
         bottom2.getChildren().addAll(scroll_left_btn, positionNum, scroll_right_btn);
         gp.add(new Label("Tema"), 0,0);
         gp.add(new Label("Plagg"), 1,0);
-        gp.add(categories, 0,1);
-        gp.add(types, 1,1);
+        gp.add(catCB, 0,1);
+        gp.add(typeCB, 1,1);
         gp.add(top3, 0,2,2, 1);
         gp.add(center, 0,3,2, 1);
         gp.add(bottom, 0,4, 2, 1);
@@ -231,7 +237,7 @@ public class WardrobeView extends BorderPane {
         return gp;
     }
 
-    private ImageView getImg(String stringPath, int width){
+    public ImageView addImgToImageView(String stringPath, int width){
         ImageView imageView = null;
 
         try {
@@ -249,7 +255,7 @@ public class WardrobeView extends BorderPane {
 
         return imageView;
     }
-    private ImageView getDefaultImg(String stringPath) {
+    public ImageView addDefaultImgToImageView(String stringPath) {
 
         ImageView imageView = null;
 
@@ -292,15 +298,56 @@ public class WardrobeView extends BorderPane {
     }
 
     public ComboBox getCategories() {
-        return categories;
+        return catCB;
     }
 
     public void addArticleBtnListener(EventHandler eventHandler) {
         browseImgBtn.setOnAction(eventHandler);
     }
 
+    public void addComboboxListener(EventHandler eventHandler) {
+        typeInput.setOnAction(eventHandler);
+    }
+
+
     public Button getBrowseImgBtn() {
         return browseImgBtn;
     }
 
+    public ImageView getTopImgView() {
+        return topImgView;
+    }
+
+    public void setTopImgView(ImageView topImgView) {
+        this.topImgView = topImgView;
+    }
+
+    public TextField getImgSrcTxf() {
+        return imgSrc;
+    }
+    public ComboBox getTypes() {
+        return typeCB;
+    }
+    public ComboBox getTypeInput() {
+        return typeInput;
+    }
+    public ComboBox getSexInput() {
+        return sexInput;
+    }
+    public TextField getModelInput() {
+        return modelInput;
+    }
+    public TextField getColourInput() {
+        return colourInput;
+    }
+    public TextField getStyleInput() {
+        return styleInput;
+    }
+    public TextField getBrandInput() {
+        return brandInput;
+    }
+
+
 }
+
+
