@@ -24,6 +24,10 @@ import java.util.logging.Logger;
 
 public class WardrobeView extends BorderPane {
     private final TextField imgSrc = new TextField();
+    private TextField modelInput = new TextField();
+    private TextField colourInput = new TextField();
+    private TextField styleInput = new TextField();
+    private TextField brandInput= new TextField();
     private final String TOP_IMG = "defaultImg/tshirt-vector.png";
     private final String SKIRT_IMG = "defaultImg/skirt.jpeg";
     private final String BOTTOM_IMG = "defaultImg/pants-vector.png";
@@ -31,6 +35,10 @@ public class WardrobeView extends BorderPane {
     private final String HANG_IMG = "defaultImg/h3.png";
     private final String LEFT_ARROW_IMG = "icons/icons8-back-50.png";
     private final String RIGHT_ARROW_IMG = "icons/icons8-forward-50.png";
+    private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
+    private final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
+
+    private Button browseImgBtn = new Button("Lägg till artikel");
     private Button scroll_left_btn = getIconBtn(LEFT_ARROW_IMG);
     private Button scroll_right_btn = getIconBtn(RIGHT_ARROW_IMG);
     private Button  createBtn = new Button("Skapa");
@@ -38,39 +46,30 @@ public class WardrobeView extends BorderPane {
     private Button searchBtn = new Button("Sök");
     private Button removeBtn = new Button("Radera");
     private Button createOutfitBtn = new Button("Skapa outfit");
-    ObservableList<String> listInstance = FXCollections.observableArrayList();
-    private ComboBox typeCB = new ComboBox();
-    private ComboBox catCB= new ComboBox();
-    private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn1 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn1 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn2 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
+    private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
+    private ObservableList<String> listInstance = FXCollections.observableArrayList();
+    private ComboBox typeCB = new ComboBox();
+    private ComboBox themeCB= new ComboBox();
+    private ComboBox typeInput = new ComboBox(listInstance);
+    private ComboBox sexInput = new ComboBox();
+    private ComboBox coloursCB = new ComboBox();
+    private ComboBox modelCategories = new ComboBox();
+    private ComboBox brandCategories = new ComboBox();
+    private ComboBox styleCategories = new ComboBox();
     private ImageView topImgView = addDefaultImgToImageView(TOP_IMG);
     private ImageView centerImgView = addDefaultImgToImageView(BOTTOM_IMG);
     private ImageView bottomImgView = addDefaultImgToImageView(SHOES_IMG);
-    private ComboBox typeInput = new ComboBox(listInstance);
-    private ComboBox sexInput = new ComboBox();
-    private TextField modelInput = new TextField();
-    private ComboBox modelCategories = new ComboBox();
-    private TextField colourInput = new TextField();
-    private ComboBox colourCategories = new ComboBox();
-    private TextField styleInput = new TextField();
-    private ComboBox styleCategories = new ComboBox();
-    private TextField brandInput= new TextField();
-    private ComboBox brandCategories = new ComboBox();
     private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
     private Category[] categories = {Category.TOP, Category.BOTTOM, Category.SHOES};
-
-    private RadioButton[] sizeChoice = new RadioButton[sizes.length];
     private String[] status = {"Ren", "Tvätten"};
+    private RadioButton[] sizeChoice = new RadioButton[sizes.length];
     private RadioButton[] statusChoice = new RadioButton[status.length];
-    private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
-    final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
     private Label positionNum = new Label(" 1 / 2 ");
-    //CRUD
-    private Button browseImgBtn = new Button("Lägg till artikel");
 
     public WardrobeView() {
         setLeft(inputView());
@@ -112,7 +111,7 @@ public class WardrobeView extends BorderPane {
         modelInput.setMaxWidth(140);
         colourInput.setMaxWidth(140);
         modelCategories.setPrefWidth(140);
-        colourCategories.setPrefWidth(140);
+        coloursCB.setPrefWidth(140);
         styleInput.setMaxWidth(140);
         styleCategories.setPrefWidth(140);
         brandInput.setMaxWidth(140);
@@ -131,7 +130,7 @@ public class WardrobeView extends BorderPane {
         gridPane.add(modelCategories, 1, 5);
         gridPane.add(new Label("Färg "), 0, 6);
         gridPane.add(colourInput, 0, 7);
-        gridPane.add(colourCategories, 1, 7);
+        gridPane.add(coloursCB, 1, 7);
         gridPane.add(new Label("Tema "), 0, 8);
         gridPane.add(styleInput, 0, 9);
         gridPane.add(styleCategories, 1, 9);
@@ -187,7 +186,7 @@ public class WardrobeView extends BorderPane {
         gp.setPadding(new Insets(0,0,5,0));
         gp.setBackground(new Background(new BackgroundFill(Color.web("#e6eaef"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        catCB.setMinWidth(140);
+        themeCB.setMinWidth(140);
         typeCB.setMinWidth(140);
         //types.setValue(clothType);
 
@@ -221,7 +220,7 @@ public class WardrobeView extends BorderPane {
         bottom2.getChildren().addAll(scroll_left_btn, positionNum, scroll_right_btn);
         gp.add(new Label("Tema"), 0,0);
         gp.add(new Label("Plagg"), 1,0);
-        gp.add(catCB, 0,1);
+        gp.add(themeCB, 0,1);
         gp.add(typeCB, 1,1);
         gp.add(top3, 0,2,2, 1);
         gp.add(center, 0,3,2, 1);
@@ -295,10 +294,6 @@ public class WardrobeView extends BorderPane {
             Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e);
         }
         return button;
-    }
-
-    public ComboBox getCategories() {
-        return catCB;
     }
 
     public void addArticleBtnListener(EventHandler eventHandler) {
