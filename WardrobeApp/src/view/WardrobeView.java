@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.dto.Category;
+import model.dto.Gender;
 import model.dto.Size;
 
 import javax.imageio.ImageIO;
@@ -37,7 +38,8 @@ public class WardrobeView extends BorderPane {
     private final String RIGHT_ARROW_IMG = "icons/icons8-forward-50.png";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
     private final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
-
+    private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
+    private String[] status = {"Ren", "Tvätten"};
     private Button browseImgBtn = new Button("Lägg till artikel");
     private Button scroll_left_btn = getIconBtn(LEFT_ARROW_IMG);
     private Button scroll_right_btn = getIconBtn(RIGHT_ARROW_IMG);
@@ -52,21 +54,16 @@ public class WardrobeView extends BorderPane {
     private Button leftBtn2 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
-    private ObservableList<String> listInstance = FXCollections.observableArrayList();
-    private ComboBox typeCB = new ComboBox();
-    private ComboBox themeCB= new ComboBox();
-    private ComboBox typeInput = new ComboBox(listInstance);
-    private ComboBox sexInput = new ComboBox();
-    private ComboBox coloursCB = new ComboBox();
-    private ComboBox modelCategories = new ComboBox();
-    private ComboBox brandCategories = new ComboBox();
-    private ComboBox styleCategories = new ComboBox();
+    private ComboBox<Category> typeCB = new ComboBox<>(FXCollections.observableArrayList(Category.TOP, Category.BOTTOM, Category.SHOES));
+    private ComboBox<Category> themeCB= new ComboBox<>(FXCollections.observableArrayList(Category.TOP, Category.BOTTOM, Category.SHOES));
+    private ComboBox<Gender> genderCB = new ComboBox<>(FXCollections.observableArrayList(Gender.UNISEX, Gender.WOMEN, Gender.MEN));
+    private ComboBox colourCB = new ComboBox();
+    private ComboBox modelCB = new ComboBox();
+    private ComboBox brandCB = new ComboBox();
+    private ComboBox styleCB = new ComboBox();
     private ImageView topImgView = addDefaultImgToImageView(TOP_IMG);
-    private ImageView centerImgView = addDefaultImgToImageView(BOTTOM_IMG);
-    private ImageView bottomImgView = addDefaultImgToImageView(SHOES_IMG);
-    private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
-    private Category[] categories = {Category.TOP, Category.BOTTOM, Category.SHOES};
-    private String[] status = {"Ren", "Tvätten"};
+    private ImageView bottomImgView = addDefaultImgToImageView(BOTTOM_IMG);
+    private ImageView shoesImgView = addDefaultImgToImageView(SHOES_IMG);
     private RadioButton[] sizeChoice = new RadioButton[sizes.length];
     private RadioButton[] statusChoice = new RadioButton[status.length];
     private Label positionNum = new Label(" 1 / 2 ");
@@ -81,6 +78,15 @@ public class WardrobeView extends BorderPane {
             ColumnConstraints column = new ColumnConstraints(145);
             gridPane.getColumnConstraints().add(column);
         }
+
+        typeCB.getItems().setAll(Category.values());
+        genderCB.getItems().setAll(Gender.values());
+        genderCB.setDisable(true);
+        brandCB.setDisable(true);
+        styleCB.setDisable(true);
+        modelCB.setDisable(true);
+        colourCB.setDisable(true);
+
 
         gridPane.setHgap(0);
         gridPane.setVgap(8);
@@ -102,41 +108,42 @@ public class WardrobeView extends BorderPane {
         browseImgBtn.setGraphic(img);
         browseImgBtn.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         browseImgBtn.setContentDisplay(ContentDisplay.TOP);
+        browseImgBtn.setDisable(true);
 
         addBtnHolder.getChildren().addAll(browseImgBtn);
         addBtnHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        typeInput.setPrefWidth(140);
-        sexInput.setPrefWidth(140);
+        typeCB.setPrefWidth(140);
+        genderCB.setPrefWidth(140);
         modelInput.setMaxWidth(140);
         colourInput.setMaxWidth(140);
-        modelCategories.setPrefWidth(140);
-        coloursCB.setPrefWidth(140);
+        modelCB.setPrefWidth(140);
+        colourCB.setPrefWidth(140);
         styleInput.setMaxWidth(140);
-        styleCategories.setPrefWidth(140);
+        styleCB.setPrefWidth(140);
         brandInput.setMaxWidth(140);
-        brandCategories.setPrefWidth(140);
-        //listInstance.addAll("Top", "bottom", "shoes");
+        brandCB.setPrefWidth(140);
+        genderCB.getItems().setAll(Gender.values());
 
         imgSrc.setDisable(true);
         gridPane.add(imgSrc,0,0, 2,1);
         gridPane.add(addBtnHolder, 0,1, 2,1);
         gridPane.add(new Label("Klädesplagg "), 0,2);
-        gridPane.add(typeInput, 0,3);
+        gridPane.add(typeCB, 0,3);
         gridPane.add(new Label("Sex "), 1,2);
-        gridPane.add(sexInput, 1,3);
+        gridPane.add(genderCB, 1,3);
         gridPane.add(new Label("Modell "), 0, 4);
         gridPane.add(modelInput, 0, 5);
-        gridPane.add(modelCategories, 1, 5);
+        gridPane.add(modelCB, 1, 5);
         gridPane.add(new Label("Färg "), 0, 6);
         gridPane.add(colourInput, 0, 7);
-        gridPane.add(coloursCB, 1, 7);
+        gridPane.add(colourCB, 1, 7);
         gridPane.add(new Label("Tema "), 0, 8);
         gridPane.add(styleInput, 0, 9);
-        gridPane.add(styleCategories, 1, 9);
+        gridPane.add(styleCB, 1, 9);
         gridPane.add(new Label("Märke "), 0, 10);
         gridPane.add(brandInput, 0, 11);
-        gridPane.add(brandCategories, 1, 11);
+        gridPane.add(brandCB, 1, 11);
         gridPane.add(new Label("Storlek "), 0, 12);
 
         HBox sizeHolder = new HBox(15);
@@ -144,11 +151,13 @@ public class WardrobeView extends BorderPane {
         ToggleGroup sizeToggleGroup = new ToggleGroup();
      //   GridPane.setColumnSpan(sizeHolder, 1);
         sizeHolder.setPadding(new Insets(0, 0, 2, 0));
+
         for (int i = 0; i < sizes.length; i++) {
             sizeChoice[i] = new RadioButton(sizes[i].name());
             sizeChoice[i].setToggleGroup(sizeToggleGroup);
             sizeHolder.getChildren().addAll(sizeChoice[i]);
         }
+
         gridPane.add(sizeHolder, 0, 13, 2, 1);
         HBox statusHolder = new HBox(15);
         statusHolder.setPadding(new Insets(5, 0, 0 ,0));
@@ -185,7 +194,6 @@ public class WardrobeView extends BorderPane {
         gp.setPrefWidth(310);
         gp.setPadding(new Insets(0,0,5,0));
         gp.setBackground(new Background(new BackgroundFill(Color.web("#e6eaef"), CornerRadii.EMPTY, Insets.EMPTY)));
-
         themeCB.setMinWidth(140);
         typeCB.setMinWidth(140);
         //types.setValue(clothType);
@@ -203,14 +211,14 @@ public class WardrobeView extends BorderPane {
         center.setPadding(new Insets(0, 0, 0, 0));
         center.setAlignment(Pos.CENTER);
 
-        center.getChildren().addAll(leftBtn1, centerImgView, rightBtn1);
+        center.getChildren().addAll(leftBtn1, bottomImgView, rightBtn1);
 
         HBox bottom = new HBox(5);
         bottom.setPrefSize(100, 100);
         bottom.setPadding(new Insets(0, 0, 10, 0));
         bottom.setAlignment(Pos.CENTER);
 
-        bottom.getChildren().addAll(leftBtn2, bottomImgView, rightBtn2);
+        bottom.getChildren().addAll(leftBtn2, shoesImgView, rightBtn2);
 
         HBox bottom2 = new HBox(5);
         //bottom2.setPrefSize(100);
@@ -221,7 +229,7 @@ public class WardrobeView extends BorderPane {
         gp.add(new Label("Tema"), 0,0);
         gp.add(new Label("Plagg"), 1,0);
         gp.add(themeCB, 0,1);
-        gp.add(typeCB, 1,1);
+        gp.add(new Label(""), 1,1);
         gp.add(top3, 0,2,2, 1);
         gp.add(center, 0,3,2, 1);
         gp.add(bottom, 0,4, 2, 1);
@@ -296,12 +304,12 @@ public class WardrobeView extends BorderPane {
         return button;
     }
 
-    public void addArticleBtnListener(EventHandler eventHandler) {
+    public void addArticleIMGListener(EventHandler eventHandler) {
         browseImgBtn.setOnAction(eventHandler);
     }
 
     public void addComboboxListener(EventHandler eventHandler) {
-        typeInput.setOnAction(eventHandler);
+        typeCB.setOnAction(eventHandler);
     }
 
 
@@ -313,6 +321,14 @@ public class WardrobeView extends BorderPane {
         return topImgView;
     }
 
+    public ImageView getBottomImgView() {
+        return bottomImgView;
+    }
+
+    public ImageView getShoesImgView() {
+        return shoesImgView;
+    }
+
     public void setTopImgView(ImageView topImgView) {
         this.topImgView = topImgView;
     }
@@ -320,15 +336,7 @@ public class WardrobeView extends BorderPane {
     public TextField getImgSrcTxf() {
         return imgSrc;
     }
-    public ComboBox getTypes() {
-        return typeCB;
-    }
-    public ComboBox getTypeInput() {
-        return typeInput;
-    }
-    public ComboBox getSexInput() {
-        return sexInput;
-    }
+
     public TextField getModelInput() {
         return modelInput;
     }
@@ -340,6 +348,54 @@ public class WardrobeView extends BorderPane {
     }
     public TextField getBrandInput() {
         return brandInput;
+    }
+
+    public ComboBox getColourCB() {
+        return colourCB;
+    }
+
+    public void setColourCB(ComboBox colourCB) {
+        this.colourCB = colourCB;
+    }
+
+    public ComboBox getModelCB() {
+        return modelCB;
+    }
+
+    public void setModelCB(ComboBox modelCB) {
+        this.modelCB = modelCB;
+    }
+
+    public ComboBox getBrandCB() {
+        return brandCB;
+    }
+
+    public void setBrandCB(ComboBox brandCB) {
+        this.brandCB = brandCB;
+    }
+
+    public ComboBox getStyleCB() {
+        return styleCB;
+    }
+
+    public void setStyleCB(ComboBox styleCB) {
+        this.styleCB = styleCB;
+    }
+
+    public ComboBox<Category> getTypeCB() {
+        return typeCB;
+    }
+
+    public void setTypeCB(ComboBox<Category> typeCB) {
+        this.typeCB = typeCB;
+    }
+
+    public ComboBox<Gender> getGenderCB() {
+        return genderCB;
+    }
+
+    public void setGenderCB(ComboBox<Gender> genderCB) {
+        this.genderCB = genderCB;
     }
 
 

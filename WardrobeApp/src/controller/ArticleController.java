@@ -4,10 +4,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.dto.Article;
+import model.dto.Category;
+import model.dto.Gender;
 import service.ArticleService;
 import view.WardrobeView;
 
@@ -22,35 +23,32 @@ public class ArticleController {
    public ArticleController(WardrobeView view, ArticleService model) {
       this.view = view;
       this.model = model;
-      CrudBtnHandler btnHandler = new CrudBtnHandler();
+      ArticleIMGHandler articleIMGHandler = new ArticleIMGHandler();
+      ComboBoxListener comboBoxListener = new ComboBoxListener();
       updateView();
    }
 
    private void updateView(){
       List<Article> allArticles = model.findAll();
-      boolean isMyComboBoxEmpty = view.getTypeInput().getSelectionModel().isEmpty();
-
-      if(isMyComboBoxEmpty){
-         view.getSexInput().setDisable(false);
-      }
-      view.getSexInput().setDisable(true);
    }
 
-   private class classComboBoxListener implements EventHandler {
+   private class ComboBoxListener implements EventHandler {
 
-      public classComboBoxListener() {
+      public ComboBoxListener() {
          view.addComboboxListener(this);
       }
 
       @Override
       public void handle(Event event) {
 
+         view.getBrowseImgBtn().setDisable(false);
+
       }
    }
 
-   private class CrudBtnHandler implements EventHandler {
-      public CrudBtnHandler() {
-         view.addArticleBtnListener(this);
+   private class ArticleIMGHandler implements EventHandler {
+      public ArticleIMGHandler() {
+         view.addArticleIMGListener(this);
       }
 
       @Override
@@ -63,10 +61,22 @@ public class ArticleController {
             if (file != null) {
                Image img = new Image(file.toURI().toString());
                view.getImgSrcTxf().setText(file.toURI().toString());
-               view.getTopImgView().setImage(img);
+
+               Category cat = view.getTypeCB().getValue();
+
+               switch (cat){
+                  case TOP:
+                     view.getTopImgView().setImage(img);
+                     break;
+                  case BOTTOM:
+                     view.getBottomImgView().setImage(img);
+                     break;
+                  case SHOES:
+                     view.getShoesImgView().setImage(img);
+                     break;
+               }
             }
          }
-
-      }
       }
    }
+}

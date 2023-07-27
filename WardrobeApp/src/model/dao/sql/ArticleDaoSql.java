@@ -76,6 +76,5 @@ public class ArticleDaoSql implements IArticleDao {
             Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
         return allArticles;
-
     }
 }

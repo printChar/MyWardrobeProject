@@ -12,11 +12,4 @@ public enum Size {
     Size(int value) {
         this.value = value;
     }
-
-    public int getSizeValue() {
-        return value;
-    }
-
-
-
 }

@@ -5,12 +5,12 @@ public class Article {
     private int style;
     private Category category;
     private Size size;
-    private Enum gender;
+    private Gender gender;
     private int model;
     private int brand;
     private String picSrc;
     private boolean isClean;
-    public Article(int colour, int style, Category category, Size size, Enum gender, int model, int brand, String picSrc, boolean isClean) {
+    public Article(int colour, int style, Category category, Size size, Gender gender, int model, int brand, String picSrc, boolean isClean) {
         this.colour = colour;
         this.style = style;
         this.category = category;
@@ -26,63 +26,48 @@ public class Article {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public int getColour() {
         return colour;
     }
-
     public void setColour(int colour) {
         this.colour = colour;
     }
-
     public int getStyle() {
         return style;
     }
-
     public void setStyle(int style) {
         this.style = style;
     }
-
-    public Enum getGender() {
+    public Gender getGender() {
         return gender;
     }
-
-    public void setGender(Enum gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
-
     public int getModel() {
         return model;
     }
-
     public void setModel(int model) {
         this.model = model;
     }
-
     public int getBrand() {
         return brand;
     }
-
     public void setBrand(int brand) {
         this.brand = brand;
     }
-
     public String getPicSrc() {
         return picSrc;
     }
-
     public void setPicSrc(String picSrc) {
         this.picSrc = picSrc;
     }
-
     public boolean isClean() {
         return isClean;
     }
-
     public void setClean(boolean clean) {
         isClean = clean;
     }
