@@ -2,11 +2,17 @@ import controller.ArticleController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.dao.sql.ArticleDaoSql;
+import model.dto.Article;
+import model.dto.Category;
 import service.ArticleService;
 import view.WardrobeView;
 
-public class Main extends Application {
+import java.util.List;
 
+
+
+public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
 
@@ -24,9 +30,7 @@ public class Main extends Application {
 
         articleDao.create(article);
 
-        List<Article> articleList = articleDao.getAll();
-        for (Article a : articleList) {
-            System.out.println(a.toString());
+
         }*/
 
     }
@@ -36,6 +40,7 @@ public class Main extends Application {
 
         WardrobeView view = new WardrobeView();
         ArticleService model = new ArticleService();
+        ArticleDaoSql articleDao = new ArticleDaoSql();
         ArticleController voteViewController = new ArticleController(view, model);
 
         primaryStage.setTitle("My wardrobe");
@@ -43,8 +48,20 @@ public class Main extends Application {
         scene.getStylesheets().add("stylesheet.css");
        // view.setBackground(new Background(new BackgroundFill(Color.web("#f5f5f5"), CornerRadii.EMPTY, Insets.EMPTY)));
         // Color.LIGHTGRAY
+
+       /* List<Article> articleList = model.findAll();
+        for (Article a : articleList)
+            System.out.println(a.toString());*/
+
+/*
+       List<Article> articleList = model.findBy("TOP");
+        for (Article a : articleList)
+            System.out.println(a.toString());
+
+*/
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
 

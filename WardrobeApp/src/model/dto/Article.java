@@ -94,7 +94,7 @@ public class Article {
                 + " Style: " + getStyle() + " Category: " + getCategory()
                 + " Gender: " + getGender() + " Model: " + getModel()
                 + " Brand: " + getBrand() + " PicSrc: " + getPicSrc()
-                + "Is clean: " + isClean();
+                + " Is clean: " + isClean();
     }
 }
 

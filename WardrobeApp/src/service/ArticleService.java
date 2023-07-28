@@ -2,6 +2,8 @@ package service;
 
 import model.dao.sql.ArticleDaoSql;
 import model.dto.Article;
+import model.dto.Category;
+
 import java.util.List;
 
 public class ArticleService {
@@ -28,5 +30,7 @@ public class ArticleService {
         return articleDaoSql.read(id);
     }
 
-
+    public List<Article> findBy(String category){
+        return articleDaoSql.getArticlesBy(category);
+    }
 }

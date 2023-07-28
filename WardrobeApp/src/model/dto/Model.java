@@ -3,7 +3,6 @@ package model.dto;
 import java.util.List;
 
 public class Model {
-
     private int id;
     private String name;
 

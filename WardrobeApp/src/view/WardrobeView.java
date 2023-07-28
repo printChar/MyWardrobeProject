@@ -39,14 +39,14 @@ public class WardrobeView extends BorderPane {
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
     private final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
     private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
-    private String[] status = {"Ren", "Tvätten"};
-    private Button browseImgBtn = new Button("Lägg till artikel");
+    private String[] status = {"Clean", "Dirty"};
+    private Button browseImgBtn = new Button("Add article");
     private Button scroll_left_btn = getIconBtn(LEFT_ARROW_IMG);
     private Button scroll_right_btn = getIconBtn(RIGHT_ARROW_IMG);
-    private Button  createBtn = new Button("Skapa");
-    private Button saveBtn = new Button("Spara");
-    private Button searchBtn = new Button("Sök");
-    private Button removeBtn = new Button("Radera");
+    private Button  createBtn = new Button("Create");
+    private Button saveBtn = new Button("Save");
+    private Button searchBtn = new Button("Search");
+    private Button removeBtn = new Button("Delete");
     private Button createOutfitBtn = new Button("Skapa outfit");
     private Button rightBtn = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn1 = getIconBtn(LEFT_ARROW_IMG);
@@ -54,8 +54,10 @@ public class WardrobeView extends BorderPane {
     private Button leftBtn2 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
-    private ComboBox<Category> typeCB = new ComboBox<>(FXCollections.observableArrayList(Category.TOP, Category.BOTTOM, Category.SHOES));
-    private ComboBox<Category> themeCB= new ComboBox<>(FXCollections.observableArrayList(Category.TOP, Category.BOTTOM, Category.SHOES));
+    private ObservableList<Category> categories = FXCollections.observableArrayList(Category.values());
+    private final ComboBox<Category> categoryCB = new ComboBox<>(categories);
+    private final ComboBox<Category> categoryCB2 = new ComboBox<>(categories);
+    private ComboBox<Category> themeCB= new ComboBox<>();
     private ComboBox<Gender> genderCB = new ComboBox<>(FXCollections.observableArrayList(Gender.UNISEX, Gender.WOMEN, Gender.MEN));
     private ComboBox colourCB = new ComboBox();
     private ComboBox modelCB = new ComboBox();
@@ -79,13 +81,14 @@ public class WardrobeView extends BorderPane {
             gridPane.getColumnConstraints().add(column);
         }
 
-        typeCB.getItems().setAll(Category.values());
+       // categoryCB.getItems().setAll(Category.values());
         genderCB.getItems().setAll(Gender.values());
-        genderCB.setDisable(true);
+
+  /*
         brandCB.setDisable(true);
         styleCB.setDisable(true);
         modelCB.setDisable(true);
-        colourCB.setDisable(true);
+        colourCB.setDisable(true);*/
 
 
         gridPane.setHgap(0);
@@ -113,7 +116,7 @@ public class WardrobeView extends BorderPane {
         addBtnHolder.getChildren().addAll(browseImgBtn);
         addBtnHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        typeCB.setPrefWidth(140);
+        categoryCB.setPrefWidth(140);
         genderCB.setPrefWidth(140);
         modelInput.setMaxWidth(140);
         colourInput.setMaxWidth(140);
@@ -128,23 +131,23 @@ public class WardrobeView extends BorderPane {
         imgSrc.setDisable(true);
         gridPane.add(imgSrc,0,0, 2,1);
         gridPane.add(addBtnHolder, 0,1, 2,1);
-        gridPane.add(new Label("Klädesplagg "), 0,2);
-        gridPane.add(typeCB, 0,3);
+        gridPane.add(new Label("Category "), 0,2);
+        gridPane.add(categoryCB, 0,3);
         gridPane.add(new Label("Sex "), 1,2);
         gridPane.add(genderCB, 1,3);
-        gridPane.add(new Label("Modell "), 0, 4);
+        gridPane.add(new Label("Model "), 0, 4);
         gridPane.add(modelInput, 0, 5);
         gridPane.add(modelCB, 1, 5);
-        gridPane.add(new Label("Färg "), 0, 6);
+        gridPane.add(new Label("Colour "), 0, 6);
         gridPane.add(colourInput, 0, 7);
         gridPane.add(colourCB, 1, 7);
-        gridPane.add(new Label("Tema "), 0, 8);
+        gridPane.add(new Label("Theme "), 0, 8);
         gridPane.add(styleInput, 0, 9);
         gridPane.add(styleCB, 1, 9);
-        gridPane.add(new Label("Märke "), 0, 10);
+        gridPane.add(new Label("Brand "), 0, 10);
         gridPane.add(brandInput, 0, 11);
         gridPane.add(brandCB, 1, 11);
-        gridPane.add(new Label("Storlek "), 0, 12);
+        gridPane.add(new Label("Size "), 0, 12);
 
         HBox sizeHolder = new HBox(15);
         sizeHolder.setAlignment(Pos.CENTER);
@@ -194,8 +197,9 @@ public class WardrobeView extends BorderPane {
         gp.setPrefWidth(310);
         gp.setPadding(new Insets(0,0,5,0));
         gp.setBackground(new Background(new BackgroundFill(Color.web("#e6eaef"), CornerRadii.EMPTY, Insets.EMPTY)));
+        categoryCB2.setMinWidth(140);
         themeCB.setMinWidth(140);
-        typeCB.setMinWidth(140);
+
         //types.setValue(clothType);
 
         HBox top3 = new HBox(5);
@@ -226,10 +230,11 @@ public class WardrobeView extends BorderPane {
        // bottom2.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         bottom2.setAlignment(Pos.CENTER);
         bottom2.getChildren().addAll(scroll_left_btn, positionNum, scroll_right_btn);
-        gp.add(new Label("Tema"), 0,0);
-        gp.add(new Label("Plagg"), 1,0);
-        gp.add(themeCB, 0,1);
-        gp.add(new Label(""), 1,1);
+        gp.add(new Label("Category"), 0,0);
+        gp.add(new Label("Theme"), 1,0);
+        gp.add(categoryCB2, 0,1);
+        gp.add(themeCB, 1,1);
+        //categoryCB2
         gp.add(top3, 0,2,2, 1);
         gp.add(center, 0,3,2, 1);
         gp.add(bottom, 0,4, 2, 1);
@@ -280,7 +285,7 @@ public class WardrobeView extends BorderPane {
             imageView.setPreserveRatio(true);
 
         } catch (IOException e) {
-            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e + " heeej");
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e);
         }
         return imageView;
     }
@@ -309,9 +314,9 @@ public class WardrobeView extends BorderPane {
     }
 
     public void addComboboxListener(EventHandler eventHandler) {
-        typeCB.setOnAction(eventHandler);
+        categoryCB.setOnAction(eventHandler);
+        categoryCB2.setOnAction(eventHandler);
     }
-
 
     public Button getBrowseImgBtn() {
         return browseImgBtn;
@@ -382,16 +387,20 @@ public class WardrobeView extends BorderPane {
         this.styleCB = styleCB;
     }
 
-    public ComboBox<Category> getTypeCB() {
-        return typeCB;
-    }
-
-    public void setTypeCB(ComboBox<Category> typeCB) {
-        this.typeCB = typeCB;
+    public ComboBox<Category> getCategoryCB() {
+        return categoryCB;
     }
 
     public ComboBox<Gender> getGenderCB() {
         return genderCB;
+    }
+
+    public ComboBox<Category> getThemeCB() {
+        return themeCB;
+    }
+
+    public ComboBox<Category> getCategoryCB2() {
+        return categoryCB2;
     }
 
     public void setGenderCB(ComboBox<Gender> genderCB) {
