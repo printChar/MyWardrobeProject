@@ -75,7 +75,7 @@ public class ArticleController {
       cb.setConverter(new StringConverter<Colour>() {
          @Override
          public String toString(Colour colour) {
-            return colour.getName();
+            return colour.getValue();
          }
 
          @Override

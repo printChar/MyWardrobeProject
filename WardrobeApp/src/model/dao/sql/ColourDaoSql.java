@@ -36,7 +36,7 @@ public class ColourDaoSql implements IColourDao {
                 while (rs.next()) {
                     Colour colour = new Colour();
                     colour.setId(rs.getInt(1));
-                    colour.setName(rs.getString(2));
+                    colour.setValue(rs.getString(2));
                     allColours.add(colour);
                 }
             }
