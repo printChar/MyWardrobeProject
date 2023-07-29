@@ -33,7 +33,7 @@ public class ModelDaoSql implements IModelDao {
                 while (rs.next()) {
                     Model model = new Model();
                     model.setId(rs.getInt(1));
-                    model.setName(rs.getString(2));
+                    model.setValue(rs.getString(2));
                     allModels.add(model);
                 }
             }

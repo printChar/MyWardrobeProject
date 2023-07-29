@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColourDaoSql implements IColourDao {
-
     private final Connection conn = ConnectToDatabase.createConnection();
-
     private final String SQL_GET_ALL_COLOURS = "SELECT * FROM COLOURS";
 
     @Override

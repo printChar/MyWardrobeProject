@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -7,9 +9,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import model.dto.Article;
 import model.dto.Category;
+import model.dto.Model;
 import service.ArticleService;
+import service.ModelService;
 import view.WardrobeView;
 
 import javax.swing.*;
@@ -20,11 +25,14 @@ import java.util.List;
 public class ArticleController {
    private WardrobeView view;
    private ArticleService model;
+
+   private ModelService modelService = new ModelService();
    private Article dtoArticle;
 
    public ArticleController(WardrobeView view, ArticleService model) {
       this.view = view;
       this.model = model;
+
       ArticleIMGHandler articleIMGHandler = new ArticleIMGHandler();
       ComboBoxListener comboBoxListener = new ComboBoxListener();
       updateView();
@@ -32,7 +40,32 @@ public class ArticleController {
 
    private void updateView(){
       List<Article> allArticles = model.findAll();
-      disableInputs(true);
+      retriveModelsFromDatabase();
+      //disableInputs(true);
+   }
+
+   private void disableInputs(boolean value){
+      view.getGenderCB().setDisable(value);
+      view.getModelCB().setDisable(value);
+      view.getColourCB().setDisable(value);
+      view.getStyleCB().setDisable(value);
+      view.getBrandCB().setDisable(value);
+   }
+
+   private void retriveModelsFromDatabase(){
+      ObservableList<Model> modelsObservableList = FXCollections.observableArrayList(modelService.findAll());
+      ComboBox cb = view.getModelCB();
+      cb.setItems(modelsObservableList);
+      cb.setConverter(new StringConverter<Model>() {
+         @Override
+         public String toString(Model model) {
+            return model.getValue();
+         }
+         @Override
+         public Model fromString(String string) {
+            return null;
+         }
+      });
    }
 
    private class ComboBoxListener implements EventHandler {
@@ -46,39 +79,50 @@ public class ArticleController {
          List<Article> articleList;
          ComboBox cb = view.getCategoryCB();
          ComboBox cb2 = view.getCategoryCB2();
-
-       //  Category cat = (Category) cb.getSelectionModel().getSelectedItem();
+         ComboBox cb3 = view.getModelCB();
 
         if (event.getSource() == cb2) {
            view.getBrowseImgBtn().setDisable(true);
            Category cat = (Category) cb2.getSelectionModel().getSelectedItem();
            switch (cat) {
               case TOP:
-                 System.out.println(cat);
+                 articleList = model.findBy(cat.getCategory());
+                 ObservableList<Article> clothesObservableList = FXCollections.observableArrayList(model.findBy(cat.getCategory()));
+
+                 for (Article a : clothesObservableList) {
+                    Image img = new Image(clothesObservableList.get(0).getPicSrc());
+                    view.getTopImgView().setImage(img);
+                    System.out.println(articleList.get(0).toString());
+                    disableInputs(false);
+                    view.getGenderCB().getSelectionModel().select(clothesObservableList.get(0).getGender());
+                    view.getModelCB().getSelectionModel().select(clothesObservableList.get(0).getModel());
+                    view.getColourCB().getSelectionModel().select(clothesObservableList.get(0).getColour());
+                    view.getStyleCB().getSelectionModel().select(clothesObservableList.get(0).getStyle());
+                    view.getBrandCB().getSelectionModel().select(clothesObservableList.get(0).getBrand());
+                   // view.getBrandCB().setDisable(value);
+                 }
+                 break;
+              case BOTTOM:
                  articleList = model.findBy(cat.getCategory());
                  for (Article a : articleList)
                     System.out.println(a.toString());
                  break;
-              case BOTTOM:
-                 System.out.println(cat.getCategory());
-                 break;
               case SHOES:
-                 System.out.println(cat.getCategory());
+                 articleList = model.findBy(cat.getCategory());
+                 for (Article a : articleList)
+                    System.out.println(a.toString());
                  break;
            }
         }else if(event.getSource() == cb) {
               view.getBrowseImgBtn().setDisable(false);
-
          }
+        else if(event.getSource() == cb3) {
+           Model modelvalue = (Model) cb3.getSelectionModel().getSelectedItem();
+           System.out.println(modelvalue.getValue());
+        }
       }
    }
-   private void disableInputs(boolean value){
-      view.getGenderCB().setDisable(value);
-      view.getModelCB().setDisable(value);
-      view.getColourCB().setDisable(value);
-      view.getStyleCB().setDisable(value);
-      view.getBrandCB().setDisable(value);
-   }
+
 
    private class ArticleIMGHandler implements EventHandler {
       public ArticleIMGHandler() {
@@ -91,21 +135,19 @@ public class ArticleController {
          Button btn = view.getBrowseImgBtn();
          ComboBox cb = view.getCategoryCB();
 
-         //System.out.println(view.getCategoryCB().getSelectionModel().getSelectedItem());
-
          if (event.getSource() == btn) {
             File file = f.showOpenDialog(new Stage());
             if (file != null) {
                   Image img = new Image(file.toURI().toString());
+
                   if (img.isError()) {
                      JOptionPane.showMessageDialog(null, "<html>Error<br>Missing images</html>",
                              "Error", JOptionPane.ERROR_MESSAGE);
                   } else {
                      view.getImgSrcTxf().setText(file.toURI().toString());
+                     System.out.println(file.toURI());
                      disableInputs(false);
                      Category cat = (Category) cb.getSelectionModel().getSelectedItem();
-
-                   //  Category cat = view.getCategoryCB().getSelectionModel().getSelectedItem();
 
                      switch (cat) {
                         case TOP:

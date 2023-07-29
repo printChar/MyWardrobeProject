@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.dto.Category;
 import model.dto.Gender;
+import model.dto.Model;
 import model.dto.Size;
 
 import javax.imageio.ImageIO;
@@ -55,12 +56,13 @@ public class WardrobeView extends BorderPane {
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private ObservableList<Category> categories = FXCollections.observableArrayList(Category.values());
+    private ObservableList<Category> models = FXCollections.observableArrayList(Category.values());
     private final ComboBox<Category> categoryCB = new ComboBox<>(categories);
     private final ComboBox<Category> categoryCB2 = new ComboBox<>(categories);
     private ComboBox<Category> themeCB= new ComboBox<>();
     private ComboBox<Gender> genderCB = new ComboBox<>(FXCollections.observableArrayList(Gender.UNISEX, Gender.WOMEN, Gender.MEN));
     private ComboBox colourCB = new ComboBox();
-    private ComboBox modelCB = new ComboBox();
+    private ComboBox<Model> modelCB = new ComboBox<>();
     private ComboBox brandCB = new ComboBox();
     private ComboBox styleCB = new ComboBox();
     private ImageView topImgView = addDefaultImgToImageView(TOP_IMG);
@@ -82,7 +84,7 @@ public class WardrobeView extends BorderPane {
         }
 
        // categoryCB.getItems().setAll(Category.values());
-        genderCB.getItems().setAll(Gender.values());
+       // genderCB.getItems().setAll(Gender.values());
 
   /*
         brandCB.setDisable(true);
@@ -316,6 +318,7 @@ public class WardrobeView extends BorderPane {
     public void addComboboxListener(EventHandler eventHandler) {
         categoryCB.setOnAction(eventHandler);
         categoryCB2.setOnAction(eventHandler);
+        modelCB.setOnAction(eventHandler);
     }
 
     public Button getBrowseImgBtn() {
