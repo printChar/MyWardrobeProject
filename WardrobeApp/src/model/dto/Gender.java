@@ -4,10 +4,9 @@ public enum Gender {
     UNISEX("Unisex"),
     WOMEN("Kvinna"),
     MEN("Man");
+    private final String gender;
 
-    private final String size;
-
-    Gender(String size) {
-        this.size = size;
+    Gender(String gender) {
+        this.gender = gender;
     }
 }

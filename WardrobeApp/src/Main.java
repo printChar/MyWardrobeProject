@@ -3,14 +3,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.dao.sql.ArticleDaoSql;
-import model.dto.Article;
-import model.dto.Category;
 import service.ArticleService;
 import view.WardrobeView;
-
-import java.util.List;
-
-
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -22,14 +16,12 @@ public class Main extends Application {
         for (Model m : modelList) {
             System.out.println(m.getName());
         }
-
 /*       ArticleDaoImpl articleDao = new ArticleDaoImpl();
 
         Article article = new Article(10, 2, 1, Size.S,
                 Gender.WOMEN, 3, 1, "testing.jpg", Boolean.FALSE);
 
         articleDao.create(article);
-
 
         }*/
 

@@ -1,8 +1,9 @@
 package model.dao.sql;
 
 import database.ConnectToDatabase;
-import model.dao.IModelDao;
+import model.dao.IStyleDao;
 import model.dto.Model;
+import model.dto.Style;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,27 +14,32 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ModelDaoSql implements IModelDao {
+public class StyleDaoSql implements IStyleDao {
 
     private final Connection conn = ConnectToDatabase.createConnection();
-    private final String SQL_GET_ALL_MODELS = "SELECT * FROM MODELS";
+    private final String SQL_GET_ALL_STYLES = "SELECT * FROM STYLES";
     @Override
-    public Model read(int id) {
+    public Style read(int id) {
         return null;
     }
 
     @Override
-    public List<Model> getAll() {
-        ArrayList<Model> allModels = new ArrayList();
+    public List<Style> getAllBy(int id) {
+        return null;
+    }
 
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL_MODELS);
+    @Override
+    public List<Style> getAll() {
+        ArrayList<Style> allModels = new ArrayList();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL_STYLES);
              ResultSet rs = pstmt.executeQuery()) {
             if (!rs.wasNull()) {
                 while (rs.next()) {
-                    Model model = new Model();
-                    model.setId(rs.getInt(1));
-                    model.setValue(rs.getString(2));
-                    allModels.add(model);
+                    Style style = new Style();
+                    style.setId(rs.getInt(1));
+                    style.setName(rs.getString(2));
+                    allModels.add(style);
                 }
             }
         } catch (SQLException ex) {
@@ -41,5 +47,4 @@ public class ModelDaoSql implements IModelDao {
         }
         return allModels;
     }
-
 }

@@ -10,11 +10,8 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import model.dto.Article;
-import model.dto.Category;
-import model.dto.Model;
-import service.ArticleService;
-import service.ModelService;
+import model.dto.*;
+import service.*;
 import view.WardrobeView;
 
 import javax.swing.*;
@@ -27,23 +24,27 @@ public class ArticleController {
    private ArticleService model;
 
    private ModelService modelService = new ModelService();
+   private ColourService colourService = new ColourService();
+   private StyleService styleService = new StyleService();
+   private BrandService brandService = new BrandService();
    private Article dtoArticle;
 
    public ArticleController(WardrobeView view, ArticleService model) {
       this.view = view;
       this.model = model;
-
       ArticleIMGHandler articleIMGHandler = new ArticleIMGHandler();
       ComboBoxListener comboBoxListener = new ComboBoxListener();
       updateView();
    }
-
    private void updateView(){
       List<Article> allArticles = model.findAll();
-      retriveModelsFromDatabase();
+      retrieveModelsFromDatabase();
+      retrieveColoursFromDatabase();
+      retrieveStylesFromDatabase();
+      retrieveBrandsFromDatabase();
+
       //disableInputs(true);
    }
-
    private void disableInputs(boolean value){
       view.getGenderCB().setDisable(value);
       view.getModelCB().setDisable(value);
@@ -52,7 +53,7 @@ public class ArticleController {
       view.getBrandCB().setDisable(value);
    }
 
-   private void retriveModelsFromDatabase(){
+   private void retrieveModelsFromDatabase(){
       ObservableList<Model> modelsObservableList = FXCollections.observableArrayList(modelService.findAll());
       ComboBox cb = view.getModelCB();
       cb.setItems(modelsObservableList);
@@ -63,6 +64,54 @@ public class ArticleController {
          }
          @Override
          public Model fromString(String string) {
+            return null;
+         }
+      });
+   }
+   private void retrieveColoursFromDatabase() {
+      ObservableList<Colour> coloursObservableList = FXCollections.observableArrayList(colourService.findAll());
+      ComboBox cb = view.getColourCB();
+      cb.setItems(coloursObservableList);
+      cb.setConverter(new StringConverter<Colour>() {
+         @Override
+         public String toString(Colour colour) {
+            return colour.getName();
+         }
+
+         @Override
+         public Colour fromString(String string) {
+            return null;
+         }
+      });
+   }
+
+   private void retrieveStylesFromDatabase(){
+      ObservableList<Style> brandsObservableList = FXCollections.observableArrayList(styleService.findAll());
+      ComboBox cb = view.getStyleCB();
+      cb.setItems(brandsObservableList);
+      cb.setConverter(new StringConverter<Style>() {
+         @Override
+         public String toString(Style style) {
+            return style.getName();
+         }
+         @Override
+         public Style fromString(String string) {
+            return null;
+         }
+      });
+   }
+
+   private void retrieveBrandsFromDatabase(){
+      ObservableList<Brand> brandsObservableList = FXCollections.observableArrayList(brandService.findAll());
+      ComboBox cb = view.getBrandCB();
+      cb.setItems(brandsObservableList);
+      cb.setConverter(new StringConverter<Brand>() {
+         @Override
+         public String toString(Brand brand) {
+            return brand.getName();
+         }
+         @Override
+         public Brand fromString(String string) {
             return null;
          }
       });

@@ -56,11 +56,13 @@ public class WardrobeView extends BorderPane {
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private ObservableList<Category> categories = FXCollections.observableArrayList(Category.values());
+    private ObservableList<Size> clothSize = FXCollections.observableArrayList(Size.XS, Size.S, Size.M, Size.L, Size.XL);
+    private ObservableList<Size> shoeSize = FXCollections.observableArrayList();
     private ObservableList<Category> models = FXCollections.observableArrayList(Category.values());
     private final ComboBox<Category> categoryCB = new ComboBox<>(categories);
     private final ComboBox<Category> categoryCB2 = new ComboBox<>(categories);
     private ComboBox<Category> themeCB= new ComboBox<>();
-    private ComboBox<Gender> genderCB = new ComboBox<>(FXCollections.observableArrayList(Gender.UNISEX, Gender.WOMEN, Gender.MEN));
+    private ComboBox<Gender> genderCB = new ComboBox<>();
     private ComboBox colourCB = new ComboBox();
     private ComboBox<Model> modelCB = new ComboBox<>();
     private ComboBox brandCB = new ComboBox();

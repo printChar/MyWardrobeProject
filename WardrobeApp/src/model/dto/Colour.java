@@ -1,9 +1,8 @@
 package model.dto;
 
 public class Colour {
-
     private int id;
-    private String name;
+    private String value;
 
     public int getId() {
         return id;
@@ -13,11 +12,11 @@ public class Colour {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getValue() {
+        return value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

@@ -2,7 +2,6 @@ package service;
 
 import model.dao.sql.ArticleDaoSql;
 import model.dto.Article;
-import model.dto.Category;
 
 import java.util.List;
 
