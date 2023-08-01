@@ -15,7 +15,6 @@ public class ColourService {
     public Colour getBy(int id){
         return colourDaoSql.read(id);
     }
-
     public void addArticleColours(int articleId, int colourId){
         colourDaoSql.addColourToArticle(articleId, colourId);
     }

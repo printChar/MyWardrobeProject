@@ -28,7 +28,6 @@ public class ArticleService {
     public Article getBy(int id){
         return articleDaoSql.read(id);
     }
-
     public List<Article> findBy(String category){
         return articleDaoSql.getArticlesBy(category);
     }

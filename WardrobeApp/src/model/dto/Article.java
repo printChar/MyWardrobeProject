@@ -71,23 +71,18 @@ public class Article {
     public void setClean(boolean clean) {
         isClean = clean;
     }
-
     public Category getCategory() {
         return category;
     }
-
     public void setCategory(Category category) {
         this.category = category;
     }
-
     public Size getSize() {
         return size;
     }
-
     public void setSize(Size size) {
         this.size = size;
     }
-
     @Override
     public String toString() {
         return "ID: " + getId() + " Colour: " + getColour()

@@ -3,14 +3,12 @@ package model.dto;
 public class Style {
     private int id;
     private String name;
-
     public Style(int id, String name) {
         this.id = id;
         this.name = name;
     }
     public Style() {
     }
-
     public int getId() {
         return id;
     }
@@ -20,7 +18,6 @@ public class Style {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

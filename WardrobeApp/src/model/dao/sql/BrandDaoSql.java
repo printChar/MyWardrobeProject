@@ -18,7 +18,6 @@ public class BrandDaoSql implements IBrandDao {
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_BRANDS = "SELECT * FROM BRANDS";
     private final String SQL_GET_BRANDS_BY_ID = "SELECT * FROM BRANDS WHERE ID=?";
-
     @Override
     public Brand read(int id) {
         Brand brand = new Brand();
@@ -35,7 +34,6 @@ public class BrandDaoSql implements IBrandDao {
         }
         return brand;
     }
-
     @Override
     public List<Brand> getAll() {
         ArrayList<Brand> allBrands = new ArrayList();

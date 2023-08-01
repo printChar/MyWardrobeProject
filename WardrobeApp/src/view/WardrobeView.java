@@ -237,13 +237,6 @@ public class WardrobeView extends BorderPane {
     }
     public void setSizeHolder(){
 
-     /*   System.out.println("cb 1: " +(Category.TOP == getCategoryCB().getSelectionModel().getSelectedItem()));
-        System.out.println("cb 2: " +(Category.BOTTOM == getCategoryCB().getSelectionModel().getSelectedItem()));
-        System.out.println("cb2 3: " +(Category.TOP == getCategoryCB2().getSelectionModel().getSelectedItem()));
-        System.out.println("cb2 4: " +(Category.BOTTOM == getCategoryCB2().getSelectionModel().getSelectedItem()));
-        System.out.println("cb 5: " +(Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()));
-        System.out.println("cb2 6: " +(Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()));
-*/
         if(sizeHolder != null) {
                 sizeHolder.getChildren().clear();
         }
@@ -306,7 +299,6 @@ public class WardrobeView extends BorderPane {
         }
         return imageView;
     }
-
     public Image resetImageView(String stringPath){
         Image img = null;
         try {
@@ -338,6 +330,25 @@ public class WardrobeView extends BorderPane {
     public Button getBrowseImgBtn() {
         return browseImgBtn;
     }
+    public Button getLeftBtn() {
+        return leftBtn;
+    }
+    public Button getRightBtn() {
+        return rightBtn;
+    }
+    public Button getLeftBtn1() {
+        return leftBtn1;
+    }
+    public Button getRightBtn1() {
+        return rightBtn1;
+    }
+    public Button getLeftBtn2() {
+        return leftBtn2;
+    }
+    public Button getRightBtn2() {
+        return rightBtn2;
+    }
+
     public ImageView getTopImgView() {
         return topImgView;
     }
@@ -346,9 +357,6 @@ public class WardrobeView extends BorderPane {
     }
     public ImageView getShoesImgView() {
         return shoesImgView;
-    }
-    public void setTopImgView(ImageView topImgView) {
-        this.topImgView = topImgView;
     }
     public TextField getImgSrcTxf() {
         return imgSrc;
@@ -368,35 +376,17 @@ public class WardrobeView extends BorderPane {
     public ComboBox getColourCB() {
         return colourCB;
     }
-    public void setColourCB(ComboBox colourCB) {
-        this.colourCB = colourCB;
-    }
     public ComboBox getModelCB() {
         return modelCB;
-    }
-    public void setModelCB(ComboBox modelCB) {
-        this.modelCB = modelCB;
     }
     public ComboBox getBrandCB() {
         return brandCB;
     }
-    public void setBrandCB(ComboBox brandCB) {
-        this.brandCB = brandCB;
-    }
     public ComboBox getStyleCB() {
         return styleCB;
     }
-    public void setStyleCB(ComboBox styleCB) {
-        this.styleCB = styleCB;
-    }
     public ComboBox<Category> getCategoryCB() {
         return categoryCB;
-    }
-    public void setCategoryCB(ComboBox<Category> categoryCB) {
-        this.categoryCB = categoryCB;
-    }
-    public void setThemeCB(ComboBox<Category> themeCB) {
-        this.themeCB = themeCB;
     }
     public ComboBox<Gender> getGenderCB() {
         return genderCB;
@@ -410,9 +400,6 @@ public class WardrobeView extends BorderPane {
     public Button getCreateBtn() {
         return createBtn;
     }
-    public void setGenderCB(ComboBox<Gender> genderCB) {
-        this.genderCB = genderCB;
-    }
     public void addArticleIMGListener(EventHandler eventHandler) {
         browseImgBtn.setOnAction(eventHandler);
     }
@@ -420,9 +407,6 @@ public class WardrobeView extends BorderPane {
         categoryCB.setOnAction(eventHandler);
         categoryCB2.setOnAction(eventHandler);
         modelCB.setOnAction(eventHandler);
-    }
-    public void addRightSideComboboxListener(EventHandler eventHandler){
-     //   categoryCB2.setOnAction(eventHandler);
     }
     public void addCrudBtnListener(EventHandler eventHandler){
         createBtn.setOnAction(eventHandler);

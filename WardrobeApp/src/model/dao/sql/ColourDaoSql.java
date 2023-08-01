@@ -61,7 +61,6 @@ public class ColourDaoSql implements IColourDao {
         }
         return allColours;
     }
-
     @Override
     public void addColourToArticle(int articleId, int colourId) {
         try (PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE_ARTICLE_COLOURS)) {

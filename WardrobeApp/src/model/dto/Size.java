@@ -15,7 +15,6 @@ public enum Size {
     public int toIntValue() {
         return value;
     }
-
     public static Size toTextValue(int value) {
         Size size = null;
         switch (value){

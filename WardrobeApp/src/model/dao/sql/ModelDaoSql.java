@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ModelDaoSql implements IModelDao {
-
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_MODELS = "SELECT * FROM MODELS";
     private final String SQL_GET_MODEL_BY_ID = "SELECT * FROM MODELS WHERE ID=?";
@@ -32,7 +31,6 @@ public class ModelDaoSql implements IModelDao {
         }
         return model;
     }
-
     @Override
     public List<Model> getAll() {
         ArrayList<Model> allModels = new ArrayList();

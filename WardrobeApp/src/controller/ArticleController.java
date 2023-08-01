@@ -19,7 +19,6 @@ import java.util.List;
 
 public class ArticleController {
    private final String TOP_IMG = "defaultImg/tshirt-vector.png";
-   private final String SKIRT_IMG = "defaultImg/skirt.jpeg";
    private final String BOTTOM_IMG = "defaultImg/pants-vector.png";
    private final String SHOES_IMG = "defaultImg/shoe-vector.png";
    private WardrobeView view;
@@ -28,14 +27,12 @@ public class ArticleController {
    private ColourService colourService = new ColourService();
    private StyleService styleService = new StyleService();
    private BrandService brandService = new BrandService();
-   private Article dtoArticle;
 
    public ArticleController(WardrobeView view, ArticleService model) {
       this.view = view;
       this.model = model;
       ArticleIMGHandler articleIMGHandler = new ArticleIMGHandler();
       ComboBoxListener comboBoxListener = new ComboBoxListener();
-      //RightSideComboBoxListener leftSideComboBoxListener = new RightSideComboBoxListener();
       CrudBtnHandler crud = new CrudBtnHandler();
       updateView();
    }
@@ -190,28 +187,6 @@ public class ArticleController {
 
       }
 
-   /*   private class RightSideComboBoxListener implements EventHandler{
-
-         public RightSideComboBoxListener() {
-            view.addRightSideComboboxListener(this);
-           // view.getCategoryCB().getSelectionModel().select(0);
-         }
-
-         @Override
-         public void handle(Event event) {
-           // ComboBox cb2 = view.getCategoryCB2();
-            ComboBox cb3 = view.getModelCB();
-
-            if(cb2 == event.getSource()) {
-              // view.getCategoryCB().getSelectionModel().clearSelection();
-               // view.getCategoryCB().getSelectionModel().selectFirst();
-            view.getSizeToggleGroup().getToggles().clear();
-            view.setSizeHolder();
-            view.getBrowseImgBtn().setDisable(false);
-         }
-      }
-   }
-*/
    private class ComboBoxListener implements EventHandler {
       public ComboBoxListener() {
          view.addComboboxListener(this);
@@ -251,7 +226,6 @@ public class ArticleController {
          boolean isClean = false;
 
          if (btn == view.getCreateBtn()) {
-
             if(Category.SHOES == view.getCategoryCB().getSelectionModel().getSelectedItem()) {
                Colour colour = (Colour) view.getColourCB().getSelectionModel().getSelectedItem();
                Model shoeModel = (Model) view.getModelCB().getSelectionModel().getSelectedItem();
@@ -283,7 +257,6 @@ public class ArticleController {
                   isClean = true;
                }
                model.create(new Article(colour.getId(), style.getId(), category, size, gender, clothModel.getId(), brand.getId(), img, isClean));
-
             }
             restartInputs();
          }

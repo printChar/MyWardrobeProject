@@ -10,13 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArticleDaoSql implements IArticleDao {
-
     private final Connection conn = ConnectToDatabase.createConnection();
-
     private final String SQL_CREATE_ARTICLE = "INSERT INTO ARTICLES(colourID, styleID, category, size, gender, modelID, brandID, picSrc, isClean) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_GET_ALL_ARTICLES = "SELECT * FROM ARTICLES";
     private final String SQL_GET_ARTICLES_BY_CATEGORY = "SELECT * FROM ARTICLES WHERE category =?";
-
     @Override
     public String create(Article article) {
 
@@ -42,15 +39,11 @@ public class ArticleDaoSql implements IArticleDao {
     public Article read(int id) {
         return null;
     }
-
     @Override
     public void update(Article article) {
     }
-
     @Override
-    public void delete(Article article) {
-    }
-
+    public void delete(Article article) {}
     @Override
     public List<Article> getArticlesBy(String value) {
 
@@ -81,8 +74,6 @@ public class ArticleDaoSql implements IArticleDao {
                 return allArticles;
 
     }
-
-
             @Override
             public List<Article> getAll () {
 

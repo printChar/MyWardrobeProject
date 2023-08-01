@@ -10,7 +10,6 @@ public class ConnectToDatabase {
     private static String hostAddress =  "jdbc:mysql://localhost:3306/wardrobedb";
     private static String username = "root";
     private static String password = "root";
-
     public ConnectToDatabase() throws ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
     }

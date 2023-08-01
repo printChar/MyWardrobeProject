@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StyleDaoSql implements IStyleDao {
-
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_STYLES = "SELECT * FROM STYLES";
     private final String SQL_GET_STYLES_BY_ID = "SELECT * FROM STYLES WHERE ID=?";
@@ -36,12 +35,10 @@ public class StyleDaoSql implements IStyleDao {
         }
         return style;
     }
-
     @Override
     public List<Style> getAllBy(int id) {
         return null;
     }
-
     @Override
     public List<Style> getAll() {
         ArrayList<Style> allModels = new ArrayList();

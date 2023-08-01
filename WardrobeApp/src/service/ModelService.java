@@ -11,7 +11,6 @@ public class ModelService {
     public List<Model> findAll() {
         return modelDaoSql.getAll();
     }
-
     public Model getBy(int id){
         return modelDaoSql.read(id);
     }
