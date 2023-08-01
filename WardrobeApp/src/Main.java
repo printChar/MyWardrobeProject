@@ -3,30 +3,17 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.dao.sql.ArticleDaoSql;
+import model.dto.Article;
+import model.dto.Category;
+import model.dto.Gender;
+import model.dto.Size;
 import service.ArticleService;
 import view.WardrobeView;
 
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
-
-      /*    ModelDaoImpl modelDaoImpl = new ModelDaoImpl();
-        List<Model> modelList = modelDaoImpl.getAll();
-
-        for (Model m : modelList) {
-            System.out.println(m.getName());
-        }
-/*       ArticleDaoImpl articleDao = new ArticleDaoImpl();
-
-        Article article = new Article(10, 2, 1, Size.S,
-                Gender.WOMEN, 3, 1, "testing.jpg", Boolean.FALSE);
-
-        articleDao.create(article);
-
-        }*/
-
     }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -45,12 +32,6 @@ public class Main extends Application {
         for (Article a : articleList)
             System.out.println(a.toString());*/
 
-/*
-       List<Article> articleList = model.findBy("TOP");
-        for (Article a : articleList)
-            System.out.println(a.toString());
-
-*/
         primaryStage.setScene(scene);
         primaryStage.show();
 

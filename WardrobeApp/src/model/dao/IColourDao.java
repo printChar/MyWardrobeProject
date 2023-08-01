@@ -8,4 +8,5 @@ public interface IColourDao {
     Colour read(int id);
     List<Colour> getAllBy(int id);
     List<Colour> getAll();
+    void addColourToArticle(int id, int colourId);
 }

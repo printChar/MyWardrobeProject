@@ -6,6 +6,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -18,9 +19,11 @@ import model.dto.Model;
 import model.dto.Size;
 
 import javax.imageio.ImageIO;
+import javax.swing.event.ChangeListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +42,6 @@ public class WardrobeView extends BorderPane {
     private final String RIGHT_ARROW_IMG = "icons/icons8-forward-50.png";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border;";
     private final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent;";
-    private Size[] sizes = {Size.XS, Size.S, Size.M, Size.L, Size.XL};
-    private String[] status = {"Clean", "Dirty"};
     private Button browseImgBtn = new Button("Add article");
     private Button scroll_left_btn = getIconBtn(LEFT_ARROW_IMG);
     private Button scroll_right_btn = getIconBtn(RIGHT_ARROW_IMG);
@@ -49,18 +50,19 @@ public class WardrobeView extends BorderPane {
     private Button searchBtn = new Button("Search");
     private Button removeBtn = new Button("Delete");
     private Button createOutfitBtn = new Button("Skapa outfit");
+    private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn1 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn1 = getIconBtn(RIGHT_ARROW_IMG);
     private Button leftBtn2 = getIconBtn(LEFT_ARROW_IMG);
     private Button rightBtn2 = getIconBtn(RIGHT_ARROW_IMG);
-    private Button leftBtn = getIconBtn(LEFT_ARROW_IMG);
     private ObservableList<Category> categories = FXCollections.observableArrayList(Category.values());
+    private ObservableList<Category> categories2 = FXCollections.observableArrayList(Category.values());
     private ObservableList<Size> clothSize = FXCollections.observableArrayList(Size.XS, Size.S, Size.M, Size.L, Size.XL);
-    private ObservableList<Size> shoeSize = FXCollections.observableArrayList();
+    private ObservableList<Size> shoeSize = FXCollections.observableArrayList(Size.S, Size.SM, Size.M, Size.ML, Size.L);
     private ObservableList<Category> models = FXCollections.observableArrayList(Category.values());
-    private final ComboBox<Category> categoryCB = new ComboBox<>(categories);
-    private final ComboBox<Category> categoryCB2 = new ComboBox<>(categories);
+    private ComboBox<Category> categoryCB = new ComboBox<>();
+    private final ComboBox<Category> categoryCB2 = new ComboBox<>(categories2);
     private ComboBox<Category> themeCB= new ComboBox<>();
     private ComboBox<Gender> genderCB = new ComboBox<>();
     private ComboBox colourCB = new ComboBox();
@@ -70,9 +72,13 @@ public class WardrobeView extends BorderPane {
     private ImageView topImgView = addDefaultImgToImageView(TOP_IMG);
     private ImageView bottomImgView = addDefaultImgToImageView(BOTTOM_IMG);
     private ImageView shoesImgView = addDefaultImgToImageView(SHOES_IMG);
-    private RadioButton[] sizeChoice = new RadioButton[sizes.length];
+    private ToggleGroup sizeToggleGroup = new ToggleGroup();
+    private ToggleGroup statusToggleGroup = new ToggleGroup();
+    private RadioButton[] sizeChoice = new RadioButton[5];
+    private String[] status = {"Clean", "Dirty"};
     private RadioButton[] statusChoice = new RadioButton[status.length];
     private Label positionNum = new Label(" 1 / 2 ");
+    private HBox sizeHolder = new HBox(15);
 
     public WardrobeView() {
         setLeft(inputView());
@@ -84,17 +90,6 @@ public class WardrobeView extends BorderPane {
             ColumnConstraints column = new ColumnConstraints(145);
             gridPane.getColumnConstraints().add(column);
         }
-
-       // categoryCB.getItems().setAll(Category.values());
-       // genderCB.getItems().setAll(Gender.values());
-
-  /*
-        brandCB.setDisable(true);
-        styleCB.setDisable(true);
-        modelCB.setDisable(true);
-        colourCB.setDisable(true);*/
-
-
         gridPane.setHgap(0);
         gridPane.setVgap(8);
         gridPane.setMinWidth(320);
@@ -131,6 +126,8 @@ public class WardrobeView extends BorderPane {
         brandInput.setMaxWidth(140);
         brandCB.setPrefWidth(140);
         genderCB.getItems().setAll(Gender.values());
+        categoryCB.getItems().setAll(Category.values());
+        categoryCB.setValue(null);
 
         imgSrc.setDisable(true);
         gridPane.add(imgSrc,0,0, 2,1);
@@ -153,31 +150,19 @@ public class WardrobeView extends BorderPane {
         gridPane.add(brandCB, 1, 11);
         gridPane.add(new Label("Size "), 0, 12);
 
-        HBox sizeHolder = new HBox(15);
         sizeHolder.setAlignment(Pos.CENTER);
-        ToggleGroup sizeToggleGroup = new ToggleGroup();
-     //   GridPane.setColumnSpan(sizeHolder, 1);
-        sizeHolder.setPadding(new Insets(0, 0, 2, 0));
-
-        for (int i = 0; i < sizes.length; i++) {
-            sizeChoice[i] = new RadioButton(sizes[i].name());
-            sizeChoice[i].setToggleGroup(sizeToggleGroup);
-            sizeHolder.getChildren().addAll(sizeChoice[i]);
-        }
+        sizeHolder.setPadding(new Insets(5, 0, 2, 0));
 
         gridPane.add(sizeHolder, 0, 13, 2, 1);
         HBox statusHolder = new HBox(15);
         statusHolder.setPadding(new Insets(5, 0, 0 ,0));
-     //   GridPane.setColumnSpan(statusHolder, 1);
-        ToggleGroup statusToggleGroup = new ToggleGroup();
+
+
         statusHolder.getChildren().add(new Label("Status "));
         for (int i = 0; i < status.length; i++) {
             statusChoice[i] = new RadioButton(status[i]);
             statusHolder.getChildren().addAll(statusChoice[i]);
             statusChoice[i].setToggleGroup(statusToggleGroup);
-           /* if(i>= status.length){
-                statusChoice[0].setSelected(true);
-            }*/
         }
         gridPane.add(statusHolder, 0, 14, 2, 1);
 
@@ -203,8 +188,6 @@ public class WardrobeView extends BorderPane {
         gp.setBackground(new Background(new BackgroundFill(Color.web("#e6eaef"), CornerRadii.EMPTY, Insets.EMPTY)));
         categoryCB2.setMinWidth(140);
         themeCB.setMinWidth(140);
-
-        //types.setValue(clothType);
 
         HBox top3 = new HBox(5);
         top3.setPrefSize(100, 100);
@@ -238,7 +221,7 @@ public class WardrobeView extends BorderPane {
         gp.add(new Label("Theme"), 1,0);
         gp.add(categoryCB2, 0,1);
         gp.add(themeCB, 1,1);
-        //categoryCB2
+
         gp.add(top3, 0,2,2, 1);
         gp.add(center, 0,3,2, 1);
         gp.add(bottom, 0,4, 2, 1);
@@ -252,7 +235,39 @@ public class WardrobeView extends BorderPane {
 
         return gp;
     }
+    public void setSizeHolder(){
 
+     /*   System.out.println("cb 1: " +(Category.TOP == getCategoryCB().getSelectionModel().getSelectedItem()));
+        System.out.println("cb 2: " +(Category.BOTTOM == getCategoryCB().getSelectionModel().getSelectedItem()));
+        System.out.println("cb2 3: " +(Category.TOP == getCategoryCB2().getSelectionModel().getSelectedItem()));
+        System.out.println("cb2 4: " +(Category.BOTTOM == getCategoryCB2().getSelectionModel().getSelectedItem()));
+        System.out.println("cb 5: " +(Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()));
+        System.out.println("cb2 6: " +(Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()));
+*/
+        if(sizeHolder != null) {
+                sizeHolder.getChildren().clear();
+        }
+            if(((Category.SHOES == getCategoryCB().getSelectionModel().getSelectedItem())
+            && (Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()))
+            || ((Category.SHOES == getCategoryCB().getSelectionModel().getSelectedItem())
+            || (Category.SHOES == getCategoryCB2().getSelectionModel().getSelectedItem()))){
+                for (int i = 0; i < sizeChoice.length; i++) {
+                    Size s = Size.valueOf(shoeSize.get(i).toString());
+                    sizeChoice[i] = new RadioButton(String.valueOf(s.toIntValue()));
+                    sizeChoice[i].setToggleGroup(sizeToggleGroup);
+                    sizeHolder.getChildren().addAll(sizeChoice[i]);
+                }
+                System.out.println("if körs");
+            } else{
+            for (int i = 0; i < sizeChoice.length; i++) {
+                Size s = clothSize.get(i);
+                sizeChoice[i] = new RadioButton(s.name());
+                sizeChoice[i].setToggleGroup(sizeToggleGroup);
+                sizeHolder.getChildren().addAll(sizeChoice[i]);
+            }
+                System.out.println("else körs");
+        }
+    }
     public ImageView addImgToImageView(String stringPath, int width){
         ImageView imageView = null;
 
@@ -264,11 +279,9 @@ public class WardrobeView extends BorderPane {
             imageView.setFitWidth(width);
             imageView.setSmooth(true);
 
-
         } catch (IOException e) {
-            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e + " heeej");
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e);
         }
-
         return imageView;
     }
     public ImageView addDefaultImgToImageView(String stringPath) {
@@ -293,10 +306,20 @@ public class WardrobeView extends BorderPane {
         }
         return imageView;
     }
+
+    public Image resetImageView(String stringPath){
+        Image img = null;
+        try {
+            BufferedImage imagePath = ImageIO.read(new File(stringPath));
+            img = SwingFXUtils.toFXImage(imagePath, null);
+        }catch (IOException e) {
+            Logger.getLogger(WardrobeView.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return img;
+    }
     private Button getIconBtn(String stringPath) {
 
         Button button = null;
-
         try {
             BufferedImage imagePath = ImageIO.read(new File(stringPath));
             Image image = SwingFXUtils.toFXImage(imagePath, null);
@@ -312,41 +335,24 @@ public class WardrobeView extends BorderPane {
         }
         return button;
     }
-
-    public void addArticleIMGListener(EventHandler eventHandler) {
-        browseImgBtn.setOnAction(eventHandler);
-    }
-
-    public void addComboboxListener(EventHandler eventHandler) {
-        categoryCB.setOnAction(eventHandler);
-        categoryCB2.setOnAction(eventHandler);
-        modelCB.setOnAction(eventHandler);
-    }
-
     public Button getBrowseImgBtn() {
         return browseImgBtn;
     }
-
     public ImageView getTopImgView() {
         return topImgView;
     }
-
     public ImageView getBottomImgView() {
         return bottomImgView;
     }
-
     public ImageView getShoesImgView() {
         return shoesImgView;
     }
-
     public void setTopImgView(ImageView topImgView) {
         this.topImgView = topImgView;
     }
-
     public TextField getImgSrcTxf() {
         return imgSrc;
     }
-
     public TextField getModelInput() {
         return modelInput;
     }
@@ -359,60 +365,80 @@ public class WardrobeView extends BorderPane {
     public TextField getBrandInput() {
         return brandInput;
     }
-
     public ComboBox getColourCB() {
         return colourCB;
     }
-
     public void setColourCB(ComboBox colourCB) {
         this.colourCB = colourCB;
     }
-
     public ComboBox getModelCB() {
         return modelCB;
     }
-
     public void setModelCB(ComboBox modelCB) {
         this.modelCB = modelCB;
     }
-
     public ComboBox getBrandCB() {
         return brandCB;
     }
-
     public void setBrandCB(ComboBox brandCB) {
         this.brandCB = brandCB;
     }
-
     public ComboBox getStyleCB() {
         return styleCB;
     }
-
     public void setStyleCB(ComboBox styleCB) {
         this.styleCB = styleCB;
     }
-
     public ComboBox<Category> getCategoryCB() {
         return categoryCB;
     }
-
+    public void setCategoryCB(ComboBox<Category> categoryCB) {
+        this.categoryCB = categoryCB;
+    }
+    public void setThemeCB(ComboBox<Category> themeCB) {
+        this.themeCB = themeCB;
+    }
     public ComboBox<Gender> getGenderCB() {
         return genderCB;
     }
-
     public ComboBox<Category> getThemeCB() {
         return themeCB;
     }
-
     public ComboBox<Category> getCategoryCB2() {
         return categoryCB2;
     }
-
+    public Button getCreateBtn() {
+        return createBtn;
+    }
     public void setGenderCB(ComboBox<Gender> genderCB) {
         this.genderCB = genderCB;
     }
-
-
+    public void addArticleIMGListener(EventHandler eventHandler) {
+        browseImgBtn.setOnAction(eventHandler);
+    }
+    public void addComboboxListener(EventHandler eventHandler) {
+        categoryCB.setOnAction(eventHandler);
+        categoryCB2.setOnAction(eventHandler);
+        modelCB.setOnAction(eventHandler);
+    }
+    public void addRightSideComboboxListener(EventHandler eventHandler){
+     //   categoryCB2.setOnAction(eventHandler);
+    }
+    public void addCrudBtnListener(EventHandler eventHandler){
+        createBtn.setOnAction(eventHandler);
+    }
+    public ToggleGroup getSizeToggleGroup() {
+        return sizeToggleGroup;
+    }
+    public ToggleGroup getStatusToggleGroup() {
+        return statusToggleGroup;
+    }
+    public ObservableList<Category> getCategories() {
+        return categories;
+    }
+    public void setCategories(ObservableList<Category> categories) {
+        this.categories = categories;
+    }
 }
 
 

@@ -10,4 +10,7 @@ public class BrandService {
     public List<Brand> findAll() {
         return brandDaoSql.getAll();
     }
+    public Brand getBy(int id){
+        return brandDaoSql.read(id);
+    }
 }

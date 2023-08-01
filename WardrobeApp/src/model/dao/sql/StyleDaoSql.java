@@ -18,9 +18,23 @@ public class StyleDaoSql implements IStyleDao {
 
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_STYLES = "SELECT * FROM STYLES";
+    private final String SQL_GET_STYLES_BY_ID = "SELECT * FROM STYLES WHERE ID=?";
     @Override
     public Style read(int id) {
-        return null;
+
+        Style style = new Style();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_STYLES_BY_ID)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    pstmt.setString(2, style.getName());
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StyleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return style;
     }
 
     @Override

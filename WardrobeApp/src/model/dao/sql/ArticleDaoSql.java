@@ -13,12 +13,12 @@ public class ArticleDaoSql implements IArticleDao {
 
     private final Connection conn = ConnectToDatabase.createConnection();
 
-    private final String SQL_CREATE_ARTICLE = "INSERT INTO ARTICLES(colourID, styleID, categoryID, size, gender, modelID, brandID, picSrc, isClean) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_CREATE_ARTICLE = "INSERT INTO ARTICLES(colourID, styleID, category, size, gender, modelID, brandID, picSrc, isClean) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_GET_ALL_ARTICLES = "SELECT * FROM ARTICLES";
     private final String SQL_GET_ARTICLES_BY_CATEGORY = "SELECT * FROM ARTICLES WHERE category =?";
 
     @Override
-    public void create(Article article) {
+    public String create(Article article) {
 
         try (PreparedStatement pstmt = conn.prepareStatement(SQL_CREATE_ARTICLE)) {
             pstmt.setInt(1, article.getColour());
@@ -35,6 +35,7 @@ public class ArticleDaoSql implements IArticleDao {
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return "*** Article was successfully added to Wardrobedb Database. ***";
     }
 
     @Override

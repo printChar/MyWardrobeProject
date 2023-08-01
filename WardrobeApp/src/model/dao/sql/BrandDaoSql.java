@@ -3,6 +3,7 @@ package model.dao.sql;
 import database.ConnectToDatabase;
 import model.dao.IBrandDao;
 import model.dto.Brand;
+import model.dto.Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +17,23 @@ import java.util.logging.Logger;
 public class BrandDaoSql implements IBrandDao {
     private final Connection conn = ConnectToDatabase.createConnection();
     private final String SQL_GET_ALL_BRANDS = "SELECT * FROM BRANDS";
+    private final String SQL_GET_BRANDS_BY_ID = "SELECT * FROM BRANDS WHERE ID=?";
+
     @Override
     public Brand read(int id) {
-        return null;
+        Brand brand = new Brand();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_BRANDS_BY_ID)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    pstmt.setString(2, brand.getName());
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ModelDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return brand;
     }
 
     @Override

@@ -4,8 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -16,13 +15,15 @@ import view.WardrobeView;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleController {
+   private final String TOP_IMG = "defaultImg/tshirt-vector.png";
+   private final String SKIRT_IMG = "defaultImg/skirt.jpeg";
+   private final String BOTTOM_IMG = "defaultImg/pants-vector.png";
+   private final String SHOES_IMG = "defaultImg/shoe-vector.png";
    private WardrobeView view;
    private ArticleService model;
-
    private ModelService modelService = new ModelService();
    private ColourService colourService = new ColourService();
    private StyleService styleService = new StyleService();
@@ -34,16 +35,40 @@ public class ArticleController {
       this.model = model;
       ArticleIMGHandler articleIMGHandler = new ArticleIMGHandler();
       ComboBoxListener comboBoxListener = new ComboBoxListener();
+      //RightSideComboBoxListener leftSideComboBoxListener = new RightSideComboBoxListener();
+      CrudBtnHandler crud = new CrudBtnHandler();
       updateView();
    }
    private void updateView(){
       List<Article> allArticles = model.findAll();
+      view.setSizeHolder();
       retrieveModelsFromDatabase();
       retrieveColoursFromDatabase();
       retrieveStylesFromDatabase();
       retrieveBrandsFromDatabase();
-
-      //disableInputs(true);
+      restartInputs();
+   }
+   private void restartInputs(){
+     // view.getCategoryCB().getSelectionModel().clearSelection();
+      view.getImgSrcTxf().setText("");
+      //view.getCategoryCB2().getItems().clear();
+      view.getGenderCB().getSelectionModel().clearSelection();
+      view.getModelCB().getSelectionModel().clearSelection();
+      view.getColourCB().getSelectionModel().clearSelection();
+      view.getStyleCB().getSelectionModel().clearSelection();
+      //view.getThemeCB().getSelectionModel().clearSelection();
+      view.getBrandCB().getSelectionModel().clearSelection();
+      for (int i = 0; i < view.getSizeToggleGroup().getToggles().size(); i++) {
+         view.getSizeToggleGroup().getToggles().get(i).setSelected(false);
+      }
+      for (int i = 0; i < view.getStatusToggleGroup().getToggles().size(); i++) {
+         view.getStatusToggleGroup().getToggles().get(i).setSelected(false);
+      }
+      view.getTopImgView().setImage(view.resetImageView(TOP_IMG));
+      view.getBottomImgView().setImage(view.resetImageView(BOTTOM_IMG));
+      view.getShoesImgView().setImage(view.resetImageView(SHOES_IMG));
+      view.getBrowseImgBtn().setDisable(true);
+      disableInputs(true);
    }
    private void disableInputs(boolean value){
       view.getGenderCB().setDisable(value);
@@ -52,7 +77,6 @@ public class ArticleController {
       view.getStyleCB().setDisable(value);
       view.getBrandCB().setDisable(value);
    }
-
    private void retrieveModelsFromDatabase(){
       ObservableList<Model> modelsObservableList = FXCollections.observableArrayList(modelService.findAll());
       ComboBox cb = view.getModelCB();
@@ -84,7 +108,6 @@ public class ArticleController {
          }
       });
    }
-
    private void retrieveStylesFromDatabase(){
       ObservableList<Style> brandsObservableList = FXCollections.observableArrayList(styleService.findAll());
       ComboBox cb = view.getStyleCB();
@@ -100,7 +123,6 @@ public class ArticleController {
          }
       });
    }
-
    private void retrieveBrandsFromDatabase(){
       ObservableList<Brand> brandsObservableList = FXCollections.observableArrayList(brandService.findAll());
       ComboBox cb = view.getBrandCB();
@@ -116,68 +138,161 @@ public class ArticleController {
          }
       });
    }
+   private void setSelectedToggleOn(Size size){
 
+      ObservableList<Toggle> sizesObservableList = view.getSizeToggleGroup().getToggles();
+      for (int i = 0; i < sizesObservableList.size(); i++) {
+         RadioButton rb = (RadioButton) sizesObservableList.get(i);
+
+         if(rb.getText().equals(size.name())){
+            sizesObservableList.get(i).setSelected(true);
+      }else if (rb.getText().equals(String.valueOf(size.toIntValue()))){
+            sizesObservableList.get(i).setSelected(true);
+         }
+      }
+   }
+   private void setSelectedToggleOn(Boolean isClean){
+      ObservableList<Toggle> statusObservableList = view.getStatusToggleGroup().getToggles();
+      for (int i = 0; i < statusObservableList.size(); i++) {
+         if (isClean) {
+            statusObservableList.get(0).setSelected(true);
+         }else{
+            statusObservableList.get(1).setSelected(true);
+         }
+
+      }
+   }
+   private void showArticles(ObservableList<Article> articles){
+     // for (Article a : articles) {
+         Image img = new Image(articles.get(0).getPicSrc());
+         if(Category.TOP == articles.get(0).getCategory()) {
+            view.getTopImgView().setImage(img);
+         } else if (Category.BOTTOM == articles.get(0).getCategory()) {
+            view.getBottomImgView().setImage(img);
+         }else if (Category.SHOES == articles.get(0).getCategory()) {
+            view.getShoesImgView().setImage(img);
+         }
+          /*  view.getGenderCB().getSelectionModel().select(articles.get(0).getGender());
+            view.getModelCB().getSelectionModel().select(articles.get(0).getModel() - 1);
+            view.getColourCB().getSelectionModel().select(articles.get(0).getColour() - 1);
+            view.getStyleCB().getSelectionModel().select(articles.get(0).getStyle() - 1);
+            view.getBrandCB().getSelectionModel().select(articles.get(0).getBrand() - 1);
+            setSelectedToggleOn(articles.get(0).getSize());
+            setSelectedToggleOn(articles.get(0).isClean());*/
+        // }
+      view.getGenderCB().getSelectionModel().select(articles.get(0).getGender());
+      view.getModelCB().getSelectionModel().select(articles.get(0).getModel() - 1);
+      view.getColourCB().getSelectionModel().select(articles.get(0).getColour() - 1);
+      view.getStyleCB().getSelectionModel().select(articles.get(0).getStyle() - 1);
+      view.getBrandCB().getSelectionModel().select(articles.get(0).getBrand() - 1);
+      setSelectedToggleOn(articles.get(0).getSize());
+      setSelectedToggleOn(articles.get(0).isClean());
+
+      }
+
+   /*   private class RightSideComboBoxListener implements EventHandler{
+
+         public RightSideComboBoxListener() {
+            view.addRightSideComboboxListener(this);
+           // view.getCategoryCB().getSelectionModel().select(0);
+         }
+
+         @Override
+         public void handle(Event event) {
+           // ComboBox cb2 = view.getCategoryCB2();
+            ComboBox cb3 = view.getModelCB();
+
+            if(cb2 == event.getSource()) {
+              // view.getCategoryCB().getSelectionModel().clearSelection();
+               // view.getCategoryCB().getSelectionModel().selectFirst();
+            view.getSizeToggleGroup().getToggles().clear();
+            view.setSizeHolder();
+            view.getBrowseImgBtn().setDisable(false);
+         }
+      }
+   }
+*/
    private class ComboBoxListener implements EventHandler {
-
       public ComboBoxListener() {
          view.addComboboxListener(this);
       }
       @Override
       public void handle(Event event) {
-         view.getBrowseImgBtn().setDisable(false);
-         List<Article> articleList;
-         ComboBox cb = view.getCategoryCB();
          ComboBox cb2 = view.getCategoryCB2();
-         ComboBox cb3 = view.getModelCB();
+         ComboBox cb = view.getCategoryCB();
 
-        if (event.getSource() == cb2) {
+         ObservableList<Article> articlesByCategoryList;
+
+         if (cb == event.getSource()) {
+            restartInputs();
+            view.getSizeToggleGroup().getToggles().clear();
+            view.setSizeHolder();
+            view.getBrowseImgBtn().setDisable(false);
+
+         }else if (cb2 == event.getSource()) {
+            cb.getSelectionModel().clearSelection();
            view.getBrowseImgBtn().setDisable(true);
+           disableInputs(false);
+           view.getSizeToggleGroup().getToggles().clear();
+           view.setSizeHolder();
            Category cat = (Category) cb2.getSelectionModel().getSelectedItem();
-           switch (cat) {
-              case TOP:
-                 articleList = model.findBy(cat.getCategory());
-                 ObservableList<Article> clothesObservableList = FXCollections.observableArrayList(model.findBy(cat.getCategory()));
-
-                 for (Article a : clothesObservableList) {
-                    Image img = new Image(clothesObservableList.get(0).getPicSrc());
-                    view.getTopImgView().setImage(img);
-                    System.out.println(articleList.get(0).toString());
-                    disableInputs(false);
-                    view.getGenderCB().getSelectionModel().select(clothesObservableList.get(0).getGender());
-                    view.getModelCB().getSelectionModel().select(clothesObservableList.get(0).getModel());
-                    view.getColourCB().getSelectionModel().select(clothesObservableList.get(0).getColour());
-                    view.getStyleCB().getSelectionModel().select(clothesObservableList.get(0).getStyle());
-                    view.getBrandCB().getSelectionModel().select(clothesObservableList.get(0).getBrand());
-                   // view.getBrandCB().setDisable(value);
-                 }
-                 break;
-              case BOTTOM:
-                 articleList = model.findBy(cat.getCategory());
-                 for (Article a : articleList)
-                    System.out.println(a.toString());
-                 break;
-              case SHOES:
-                 articleList = model.findBy(cat.getCategory());
-                 for (Article a : articleList)
-                    System.out.println(a.toString());
-                 break;
+            articlesByCategoryList = FXCollections.observableArrayList(model.findBy(cat.getCategory()));
+           showArticles(articlesByCategoryList);
            }
-        }else if(event.getSource() == cb) {
-              view.getBrowseImgBtn().setDisable(false);
-         }
-        else if(event.getSource() == cb3) {
-           Model modelvalue = (Model) cb3.getSelectionModel().getSelectedItem();
-           System.out.println(modelvalue.getValue());
         }
+   }
+   private class CrudBtnHandler implements EventHandler{
+      public CrudBtnHandler() {
+         view.addCrudBtnListener(this);
+      }
+      @Override
+      public void handle(Event event) {
+         Button btn = (Button) event.getSource();
+         boolean isClean = false;
+
+         if (btn == view.getCreateBtn()) {
+
+            if(Category.SHOES == view.getCategoryCB().getSelectionModel().getSelectedItem()) {
+               Colour colour = (Colour) view.getColourCB().getSelectionModel().getSelectedItem();
+               Model shoeModel = (Model) view.getModelCB().getSelectionModel().getSelectedItem();
+               Style style = (Style) view.getStyleCB().getSelectionModel().getSelectedItem();
+               Category category = view.getCategoryCB().getSelectionModel().getSelectedItem();
+               RadioButton chk = (RadioButton) view.getSizeToggleGroup().getSelectedToggle(); //size
+               RadioButton chk2 = (RadioButton) view.getStatusToggleGroup().getSelectedToggle();
+               Gender gender = view.getGenderCB().getSelectionModel().getSelectedItem();
+               Brand brand = (Brand) view.getBrandCB().getSelectionModel().getSelectedItem();
+               String img = view.getImgSrcTxf().getText();
+               Size size = Size.toTextValue(Integer.parseInt(chk.getText()));
+               if(chk2.getText().equals("Clean")){
+                  isClean = true;
+               }
+               model.create(new Article(colour.getId(), style.getId(), category, size, gender, shoeModel.getId(), brand.getId(), img, isClean));
+
+            }else{
+               Colour colour = (Colour) view.getColourCB().getSelectionModel().getSelectedItem();
+               Model clothModel = (Model) view.getModelCB().getSelectionModel().getSelectedItem();
+               Style style = (Style) view.getStyleCB().getSelectionModel().getSelectedItem();
+               Category category = view.getCategoryCB().getSelectionModel().getSelectedItem();
+               RadioButton chk = (RadioButton) view.getSizeToggleGroup().getSelectedToggle(); //size
+               RadioButton chk2 = (RadioButton) view.getStatusToggleGroup().getSelectedToggle();
+               Gender gender = view.getGenderCB().getSelectionModel().getSelectedItem();
+               Brand brand = (Brand) view.getBrandCB().getSelectionModel().getSelectedItem();
+               String img = view.getImgSrcTxf().getText();
+               Size size = Size.valueOf(chk.getText());
+               if(chk2.getText().equals("Clean")){
+                  isClean = true;
+               }
+               model.create(new Article(colour.getId(), style.getId(), category, size, gender, clothModel.getId(), brand.getId(), img, isClean));
+
+            }
+            restartInputs();
+         }
       }
    }
-
-
    private class ArticleIMGHandler implements EventHandler {
       public ArticleIMGHandler() {
          view.addArticleIMGListener(this);
       }
-
       @Override
       public void handle(Event event) {
          final FileChooser f = new FileChooser();
@@ -194,7 +309,6 @@ public class ArticleController {
                              "Error", JOptionPane.ERROR_MESSAGE);
                   } else {
                      view.getImgSrcTxf().setText(file.toURI().toString());
-                     System.out.println(file.toURI());
                      disableInputs(false);
                      Category cat = (Category) cb.getSelectionModel().getSelectedItem();
 
