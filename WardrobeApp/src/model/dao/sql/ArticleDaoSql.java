@@ -56,6 +56,7 @@ public class ArticleDaoSql implements IArticleDao {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Article a = new Article();
+                    a.setId(rs.getInt(1));
                     a.setColour(rs.getInt(2));
                     a.setStyle(rs.getInt(3));
                     a.setCategory(Category.valueOf(rs.getString(4).toUpperCase()));

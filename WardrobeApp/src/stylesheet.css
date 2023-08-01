@@ -6,3 +6,10 @@
    -fx-font-family: 'Andale Mono';
     -fx-font-size: 16px;
 }
+
+#topImgViewBtn, #bottomImgViewBtn, #shoesImgViewBtn{
+    -fx-padding: 0px;
+}
+#topImgViewBtn:hover, #bottomImgViewBtn:hover, #shoesImgViewBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}

@@ -21,6 +21,18 @@ public class Article {
         this.picSrc = picSrc;
         this.isClean = isClean;
     }
+    public Article(int id, int colour, int style, Category category, Size size, Gender gender, int model, int brand, String picSrc, boolean isClean) {
+        this.id = id;
+        this.colour = colour;
+        this.style = style;
+        this.category = category;
+        this.size = size;
+        this.gender = gender;
+        this.model = model;
+        this.brand = brand;
+        this.picSrc = picSrc;
+        this.isClean = isClean;
+    }
     public Article() {
     }
     public int getId() {
