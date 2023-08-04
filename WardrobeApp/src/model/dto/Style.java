@@ -3,10 +3,6 @@ package model.dto;
 public class Style {
     private int id;
     private String name;
-    public Style(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
     public Style() {
     }
     public int getId() {

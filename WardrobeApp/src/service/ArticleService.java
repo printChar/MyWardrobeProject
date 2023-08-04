@@ -9,8 +9,8 @@ public class ArticleService {
     //Article communicator
     private final ArticleDaoSql articleDaoSql = new ArticleDaoSql();
     //creation req -> database
-    public void create(Article article) {
-        articleDaoSql.create(article);
+    public String create(Article article) {
+        return articleDaoSql.create(article);
     }
     //return all obj req <- database
     public List<Article> findAll() {

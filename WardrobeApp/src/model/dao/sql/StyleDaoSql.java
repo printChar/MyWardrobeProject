@@ -41,7 +41,7 @@ public class StyleDaoSql implements IStyleDao {
     }
     @Override
     public List<Style> getAll() {
-        ArrayList<Style> allModels = new ArrayList();
+        ArrayList<Style> allStyles = new ArrayList();
 
         try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL_STYLES);
              ResultSet rs = pstmt.executeQuery()) {
@@ -50,12 +50,12 @@ public class StyleDaoSql implements IStyleDao {
                     Style style = new Style();
                     style.setId(rs.getInt(1));
                     style.setName(rs.getString(2));
-                    allModels.add(style);
+                    allStyles.add(style);
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(ModelDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return allModels;
+        return allStyles;
     }
 }

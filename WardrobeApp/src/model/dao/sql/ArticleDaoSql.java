@@ -14,6 +14,7 @@ public class ArticleDaoSql implements IArticleDao {
     private final String SQL_CREATE_ARTICLE = "INSERT INTO ARTICLES(colourID, styleID, category, size, gender, modelID, brandID, picSrc, isClean) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String SQL_GET_ALL_ARTICLES = "SELECT * FROM ARTICLES";
     private final String SQL_GET_ARTICLES_BY_CATEGORY = "SELECT * FROM ARTICLES WHERE category =?";
+    private final String SQL_GET_ARTICLE_BY_ID = "SELECT * FROM ARTICLES WHERE ID =?";
     @Override
     public String create(Article article) {
 
@@ -37,7 +38,29 @@ public class ArticleDaoSql implements IArticleDao {
 
     @Override
     public Article read(int id) {
-        return null;
+
+        Article a = new Article();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ARTICLE_BY_ID)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    a.setId(rs.getInt(1));
+                    a.setColour(rs.getInt(2));
+                    a.setStyle(rs.getInt(3));
+                    a.setCategory(Category.valueOf(rs.getString(4).toUpperCase()));
+                    a.setSize(Size.valueOf(rs.getString(5)));
+                    a.setGender(Gender.valueOf(rs.getString(6).toUpperCase()));
+                    a.setModel(rs.getInt(7));
+                    a.setBrand(rs.getInt(8));
+                    a.setPicSrc(rs.getString(9));
+                    a.setClean(rs.getBoolean(10));
+                }
+            }
+        } catch(SQLException ex){
+            Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return a;
     }
     @Override
     public void update(Article article) {

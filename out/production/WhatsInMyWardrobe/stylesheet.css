@@ -6,3 +6,28 @@
    -fx-font-family: 'Andale Mono';
     -fx-font-size: 16px;
 }
+
+#topImgViewBtn, #bottomImgViewBtn, #shoesImgViewBtn{
+    -fx-padding: 0px;
+}
+#topImgViewBtn:hover, #bottomImgViewBtn:hover, #shoesImgViewBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+
+}
+
+
+#leftTopBtn, #rightTopBtn, #leftBottomBtn, #rightBottomBtn, #leftShoesBtn, #rightShoesBtn{
+}
+
+#leftTopBtn:hover, #rightTopBtn:hover, #leftBottomBtn:hover, #rightBottomBtn:hover, #leftShoesBtn:hover, #rightShoesBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 1);
+}
+#scroll_right_btn, #scroll_left_btn{
+
+}
+
+#scroll_right_btn:hover,  #scroll_left_btn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 1);
+
+
+}
