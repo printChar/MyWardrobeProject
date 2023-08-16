@@ -23,13 +23,9 @@ public class Main extends Application {
         ArticleController voteViewController = new ArticleController(view, model);
 
         primaryStage.setTitle("My wardrobe");
-        Scene scene = new Scene(view, 640, 750);
+        Scene scene = new Scene(view, 680, 790);
         scene.getStylesheets().add("stylesheet.css");
        // view.setBackground(new Background(new BackgroundFill(Color.web("#f5f5f5"), CornerRadii.EMPTY, Insets.EMPTY)));
-        // Color.LIGHTGRAY
-       /* List<Article> articleList = model.findAll();
-        for (Article a : articleList)
-            System.out.println(a.toString());*/
         primaryStage.setScene(scene);
         primaryStage.show();
 

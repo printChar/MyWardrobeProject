@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap');
+
 .root{
     -fx-background-color: #000000;
 }
@@ -7,18 +9,42 @@
     -fx-font-size: 16px;
 }
 
+#introTitle{
+    -fx-font-family: 'Dosis', sans-serif;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-min-width: 300px;
+    -fx-padding: 3px;
+}
+
+#topImgView, #bottomImgView, #shoesImgView{
+
+}
+
+#createBtn{
+    -fx-font-family: 'Dosis', sans-serif;
+    -fx-font-size: 18px;
+}
+
+#createBtn:hover{
+    -fx-effect: none;
+
+}
+
 #topImgViewBtn, #bottomImgViewBtn, #shoesImgViewBtn{
-    -fx-padding: 0px;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 #topImgViewBtn:hover, #bottomImgViewBtn:hover, #shoesImgViewBtn:hover{
-    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
-
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 1.5, 0.5, 0, 1);
 }
-
 
 #leftTopBtn, #rightTopBtn, #leftBottomBtn, #rightBottomBtn, #leftShoesBtn, #rightShoesBtn{
-}
 
+}
+#saveBtn:hover, #searchBtn:hover, #removeBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 0);
+}
 #leftTopBtn:hover, #rightTopBtn:hover, #leftBottomBtn:hover, #rightBottomBtn:hover, #leftShoesBtn:hover, #rightShoesBtn:hover{
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 1);
 }
@@ -28,6 +54,30 @@
 
 #scroll_right_btn:hover,  #scroll_left_btn:hover{
     -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 1);
+}
+
+#topIconBtn, #bottomIconBtn, #shoesIconBtn{
+    -fx-background-color: transparent;
+}
+
+#topIconBtn:hover, #bottomIconBtn:hover, #shoesIconBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(150, 147, 147, 0.59), 8, 0.5, 0, 0);
+}
+
+#createOutfitBtn:hover, #deleteOutfitBtn:hover, #refreshOutfitBtn:hover, #randomizeOutfitBtn:hover{
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 2, 0.5, 0, 1);
+}
+
+#currPos{
+    -fx-text-fill: #1B98F5;
+}
 
 
+.selectedCat{
+    -fx-effect: none;
+
+}
+
+.selectedView{
+    -fx-effect: dropshadow( three-pass-box, rgba(252, 101, 247, 0.8), 3, 0.5, 0, 0);
 }

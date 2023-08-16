@@ -9,4 +9,6 @@ public interface IColourDao {
     List<Colour> getAllBy(int id);
     List<Colour> getAll();
     void addColourToArticle(int id, int colourId);
+    String add(Colour colour);
+
 }

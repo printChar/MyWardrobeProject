@@ -17,12 +17,12 @@ public class ArticleService {
         return articleDaoSql.getAll();
     }
     //updates req -> database
-    public void update(Article article) {
-        articleDaoSql.update(article);
+    public String update(Article article) {
+        return articleDaoSql.update(article);
     }
     //delete req -> database
-    public void delete(Article article) {
-        articleDaoSql.delete(article);
+    public String delete(int id) {
+        return articleDaoSql.delete(id);
     }
     //get obj by req <-> database
     public Article getBy(int id){

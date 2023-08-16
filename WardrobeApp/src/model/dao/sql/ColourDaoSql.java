@@ -72,5 +72,10 @@ public class ColourDaoSql implements IColourDao {
             Logger.getLogger(ColourDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public String add(Colour colour) {
+        return null;
+    }
 }
 

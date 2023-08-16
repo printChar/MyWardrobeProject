@@ -15,4 +15,5 @@ public class Colour {
     public void setValue(String value) {
         this.value = value;
     }
+
 }

@@ -1,6 +1,8 @@
 package model.dao.sql;
 
 import database.ConnectToDatabase;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import model.dao.IOutfitDao;
 import model.dto.*;
 
@@ -18,6 +20,7 @@ public class OutfitDaoSql implements IOutfitDao {
     private final String SQL_CREATE_OUTFIT = "INSERT INTO OUTFITS(topArticleID, bottomArticleID, shoeArticleID, styleID) VALUES (?, ?, ?, ?)";
     private final String SQL_GET_OUTFIT_BY_ID = "SELECT * FROM OUTFITS WHERE ID=?";
     private final String SQL_GET_ALL_OUTFITS = "SELECT * FROM OUTFITS";
+    private static final String SQL_DELETE_OUTFIT = "DELETE FROM OUTFITS WHERE ID =?";
 
 
     @Override
@@ -34,10 +37,23 @@ public class OutfitDaoSql implements IOutfitDao {
         }
         return "*** Outfit was successfully added to Wardrobedb Database. ***";
     }
+
+    @Override
+    public String delete(int id) {
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_OUTFIT)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch(SQLException ex){
+            Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "*** Outfit was successfully deleted from Wardrobedb Database. ***";
+    }
+
     @Override
     public List<Outfit> getOutfitsBy(String category) {
         return null;
     }
+
     @Override
     public List<Outfit> getAll() {
         List<Outfit> allOutfits = new ArrayList();
@@ -58,15 +74,15 @@ public class OutfitDaoSql implements IOutfitDao {
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return allOutfits;
 
+        return allOutfits;
     }
 
     @Override
-    public Outfit getOutfitBy(int id) {
+    public Outfit read(int id) {
         Outfit outfit = new Outfit();
 
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ALL_OUTFITS)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_GET_OUTFIT_BY_ID)) {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {

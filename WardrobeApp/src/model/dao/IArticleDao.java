@@ -9,8 +9,8 @@ import java.util.List;
 public interface IArticleDao {
     String create(Article article);
     Article read(int id);
-    void update(Article article);
-    void delete(Article article);
+    String update(Article article);
+    String delete(int id);
     List<Article>  getArticlesBy(String category);
     List<Article> getAll();
 

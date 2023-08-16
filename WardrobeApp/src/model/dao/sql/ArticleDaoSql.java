@@ -1,6 +1,8 @@
 package model.dao.sql;
 
 import database.ConnectToDatabase;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import model.dao.IArticleDao;
 import model.dto.*;
 import java.sql.*;
@@ -15,6 +17,9 @@ public class ArticleDaoSql implements IArticleDao {
     private final String SQL_GET_ALL_ARTICLES = "SELECT * FROM ARTICLES";
     private final String SQL_GET_ARTICLES_BY_CATEGORY = "SELECT * FROM ARTICLES WHERE category =?";
     private final String SQL_GET_ARTICLE_BY_ID = "SELECT * FROM ARTICLES WHERE ID =?";
+    private final String SQL_UPDATE_ARTICLE_BY_ID = "UPDATE ARTICLES SET colourID=?, styleID=?, size=?, gender=?, modelID=?, brandID=?, isClean=?  WHERE ID=?";
+    private static final String SQL_DELETE_ARTICLE = "DELETE FROM ARTICLES WHERE ID =?";
+
     @Override
     public String create(Article article) {
 
@@ -57,16 +62,43 @@ public class ArticleDaoSql implements IArticleDao {
                     a.setClean(rs.getBoolean(10));
                 }
             }
-        } catch(SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
         }
         return a;
     }
+
     @Override
-    public void update(Article article) {
+    public String update(Article article) {
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE_ARTICLE_BY_ID)) {
+            //colourID=?, styleID=?, size=?, gender=?, modelID=?, brandID=?, isClean=?  WHERE ID=?"
+            pstmt.setInt(1, article.getColour());
+            pstmt.setInt(2, article.getStyle());
+            pstmt.setString(3, article.getSize().toString());
+            pstmt.setString(4, article.getGender().toString());
+            pstmt.setInt(5, article.getModel());
+            pstmt.setInt(6, article.getBrand());
+            pstmt.setBoolean(7, article.isClean());
+            pstmt.setInt(8, article.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "*** Article was successfully updated to Wardrobedb Database. ***";
     }
+
     @Override
-    public void delete(Article article) {}
+    public String delete(int id) {
+        try (PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_ARTICLE)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+            } catch(SQLException ex){
+        Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        return "*** Article was successfully deleted from Wardrobedb Database. ***";
+}
     @Override
     public List<Article> getArticlesBy(String value) {
 
@@ -95,8 +127,10 @@ public class ArticleDaoSql implements IArticleDao {
                 } catch(SQLException ex){
                     Logger.getLogger(ArticleDaoSql.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            if(allArticles.isEmpty()){
+                System.out.println("*** No articles was found from Wardrobedb Database. ***");
+        }
                 return allArticles;
-
     }
             @Override
             public List<Article> getAll () {
